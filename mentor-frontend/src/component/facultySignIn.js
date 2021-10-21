@@ -4,7 +4,7 @@ import '../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
-
+import { Link, NavLink } from 'react-router-dom';
 export default function facultySignIn() {
     const onFinish = values => {
         console.log('Success:', values);
@@ -14,7 +14,7 @@ export default function facultySignIn() {
         console.log('Failed:', errorInfo);
     };
     return (
-        <div>
+        <div className="formf">
             <Form
                 name="login-form"
                 initialValues={{ remember: true }}
@@ -45,7 +45,13 @@ export default function facultySignIn() {
                 <Form.Item name="remember" valuePropName="checked">
                     <a href="#">Forgot Password</a>
                 </Form.Item>
-               
+                
+                <Form.Item name="remember" valuePropName="checked">
+                    <Link to="/signup">
+                        <span>Don't have an account? </span>SIGN UP NOW
+                    </Link>
+                </Form.Item>
+                
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="login-form-button">

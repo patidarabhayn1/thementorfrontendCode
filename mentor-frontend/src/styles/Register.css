@@ -2,10 +2,10 @@
 	 width: 8px;
 }
  ::-webkit-scrollbar-track {
-	 background-color: #aaa;
+	 background-color: rgb(250, 246, 246);
 }
  ::-webkit-scrollbar-thumb {
-	 background-color: #335ddc;
+	 background-color: rgb(180, 92, 92);
 	 border-radius: 8px;
 }
  body {
@@ -15,7 +15,7 @@
 	height: 50px;
 	margin-bottom: 40px;
 	position: relative;
-	top:-8px
+	top:-8px;
   }
  .login-page {
 	 display: flex;
@@ -42,7 +42,7 @@
 	display: inline-block;
 	width: 50%;
 	height: 100%;
-	background-color: rgb(180, 92, 92);
+	background-color: rgb(158 56 56);
 	color: #D8D9DE !important;
   }
   .headerInActive {
@@ -72,6 +72,19 @@
   .formBody {
 	height: 70%;
   }
+  .formss {
+	  overflow-y: scroll;
+	  max-height: 80vh;
+	  position: relative;
+	  top:-38px;
+  }
+  .formfs {
+	  overflow-y: scroll;
+	  max-height: 80vh;
+	  position: relative;
+	  top:-38px;
+  }
+ 
  #login-form {
 	 flex: 1 0 100%;
 	 max-width: 480px;
@@ -120,6 +133,7 @@
 	 display: block;
 	 width: 100%;
 }
+
  @media screen and (max-width: 1023px) {
 	 .login-box {
 		 flex-direction: column-reverse;
@@ -140,5 +154,22 @@
 	.formHeader{
 		top:.99px;
 	}
+	.formss{
+		overflow:visible;
+		max-height: none;
+	}
+	.formfs{
+		overflow:visible;
+		max-height: none;
+	}
 }
+@media screen and (min-width: 1022px) {
+	.formf{
+		max-height: 80vh;
+		position: relative;
+		top:-38px;
+	}
+	
+}
+
  

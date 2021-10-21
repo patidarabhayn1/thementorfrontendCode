@@ -4,6 +4,8 @@ import '../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
+import { Link, NavLink } from 'react-router-dom';
+import ScrollNumber from 'antd/lib/badge/ScrollNumber';
 
 export default function studentSignIn() {
     const onFinish = values => {
@@ -14,12 +16,13 @@ export default function studentSignIn() {
         console.log('Failed:', errorInfo);
     };
     return (
-        <div>
+        <div className="formf">
             <Form
                 name="login-form"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                
             >
                 
                 <p className="form-title">Welcome back</p>
@@ -44,6 +47,11 @@ export default function studentSignIn() {
 
                 <Form.Item name="remember" valuePropName="checked">
                     <a href="#">Forgot Password</a>
+                </Form.Item>
+                <Form.Item name="remember" valuePropName="checked">
+                    <Link to="/signup">
+                        <span>Don't have an account? </span>SIGN UP NOW
+                    </Link>
                 </Form.Item>
 
                 <Form.Item>
