@@ -5,7 +5,7 @@ import '../styles/profile.css';
 import ProfileUi from 'react-profile-card';
 import { Card, ButtonGroup, Button } from 'react-bootstrap';
 import TabSection from './TabComponent';
-import NavigationBar from './NavbarComponent';
+import NavigationBar from './TeacherNavbarComponent';
 
 function Profiles() {
     const [click, setClick] = useState(false);
