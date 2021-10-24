@@ -2,9 +2,14 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Table from './TableComponent';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
+import Internship from './Tables/InternshipTable';
+import Courses from './Tables/CoursesTable';
+import Absence from './Tables/MajorAbsenceTable';
+import Activity from './Tables/IndisciplinaryActivityTable';
+import Result from './Tables/Result';
+import {Form } from 'react-bootstrap';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,25 +68,34 @@ export default function BasicTabs() {
         >
           <Tab label="Internships" {...a11yProps(0)} />
           <Tab label="Courses" {...a11yProps(1)} />
-          <Tab label="InDisciplinary Activities" {...a11yProps(2)} />
+          <Tab label="Semester Details" {...a11yProps(2)} />
           <Tab label="Major Absence" {...a11yProps(3)} />
+          <Tab label="InDisciplinary Activities" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-          1
-        <Table/>
+        <Internship/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-          2
-      <Table/>
+        <Courses/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-          3
-      <Table/>
+        <Form>
+          <Form.Label>Select Semester</Form.Label>
+          <Form.Select aria-label="Default select example">
+            <option>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </Form.Select>
+        </Form>
+        <Result/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-          4
-      <Table/>
+          <Absence/>
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+          <Activity/>
       </TabPanel>
     </div>
   );
