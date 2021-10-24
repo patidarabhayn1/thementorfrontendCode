@@ -16,38 +16,37 @@ import Paper from "@mui/material/Paper";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
+import {Button} from 'react-bootstrap';
 
-function createData(domain, platform, from, to, certificate) {
+function createData(name, enrollment, branch, year, options) {
   return {
-    domain,
-    platform,
-    from,
-    to,
-    certificate
+    name,
+    enrollment,
+    branch,
+    year,
+    options
   };
 }
 
-const viewButton = <button className="btn btn-success">View</button>;
+const options = <span><Button className="optionView" href="/student/123/profile">View</Button><Button variant="danger">Delete</Button></span>;
 
 const rows = [
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton)
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options),
+  createData("Garvisha Devda", "EN19CS306016", "CSBS", "2019", options)
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -82,34 +81,34 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "domain",
+    id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Domain"
+    label: "Name"
   },
   {
-    id: "platform",
+    id: "enrollment",
     numeric: true,
     disablePadding: false,
     label: "Platform"
   },
   {
-    id: "from",
+    id: "branch",
     numeric: true,
     disablePadding: false,
-    label: "From"
+    label: "Branch"
   },
   {
-    id: "to",
+    id: "year",
     numeric: true,
     disablePadding: false,
-    label: "To"
+    label: "Year"
   },
   {
-    id: "certificate",
+    id: "options",
     numeric: true,
     disablePadding: false,
-    label: "Certificate"
+    label: "Options"
   }
 ];
 
@@ -180,7 +179,7 @@ const EnhancedTableToolbar = (props) => {
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("platform");
+  const [orderBy, setOrderBy] = React.useState("Name");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -236,7 +235,7 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.domain}
+                      key={row.name}
                     >
                       <TableCell padding="checkbox"></TableCell>
                       <TableCell
@@ -245,12 +244,12 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.domain}
+                        {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.platform}</TableCell>
-                      <TableCell align="right">{row.from}</TableCell>
-                      <TableCell align="right">{row.to}</TableCell>
-                      <TableCell align="right">{row.certificate}</TableCell>
+                      <TableCell align="right">{row.enrollment}</TableCell>
+                      <TableCell align="right">{row.branch}</TableCell>
+                      <TableCell align="right">{row.year}</TableCell>
+                      <TableCell align="right">{row.options}</TableCell>
                     </TableRow>
                   );
                 })}

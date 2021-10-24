@@ -2,11 +2,7 @@ import React from 'react';
 import StudentList from '../Tables/StudentList';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import 'antd/dist/antd.css';
-import Form from "antd/lib/form";
-import Input from "antd/lib/input";
-import { Menu, Dropdown, message, Select } from "antd";
-import { Link, NavLink } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 
 function ModalForm() {
     const onFinish = values => {
@@ -24,29 +20,16 @@ function ModalForm() {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
-                <Form.Item label="Degree">
-                <Select  showSearch>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="1demo">ADemo</Select.Option>
-                    <Select.Option value="demo">BDemo</Select.Option>
-                    <Select.Option value="demo">CDemo</Select.Option>
-                    <Select.Option value="demo">EDemo</Select.Option>
-                    <Select.Option value="demo">FDemo</Select.Option>
-                    <Select.Option value="demo">GDemo</Select.Option>
-                    <Select.Option value="demo">FDemo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-                    <Select.Option value="demo">Demo</Select.Option>
-
-                </Select>
-                </Form.Item>
+              <Form.Group>
+                <Form.Label>Student's Enrollment No.</Form.Label>
+                <Form.Control type="email" placeholder="ex. EN19CS306016" />
+                <Form.Text className="text-muted">
+                  We will show his details
+                </Form.Text>
+              </Form.Group>
+                <Button variant="primary" type="submit">
+                  Fetch Details
+                </Button>
             </Form>
     )
 }
