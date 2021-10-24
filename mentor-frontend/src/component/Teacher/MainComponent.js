@@ -2,7 +2,8 @@ import React from 'react';
 import Header from './HeaderComponent';
 import NavigationBar from './NavbarComponent';
 import { Route, Redirect} from 'react-router-dom';
-import ProfileComponent from './ProfileComponent';
+import TeacherHome from './HomeComponent';
+import BatchComponent from './BatchComponent';
 
 function Main() {
     return (
@@ -12,7 +13,10 @@ function Main() {
             </div>
             <div className="containers">
                 <NavigationBar />
-                <Route path="/student/profile" component={ProfileComponent}/>
+            </div>
+            <div className="container mainSection">
+                <Route exact path="/teacher/home" component={TeacherHome}/>
+                <Route path="/teacher/batch/:batchId" component={BatchComponent}/>
             </div>
         </div>
     )

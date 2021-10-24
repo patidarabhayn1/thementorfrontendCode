@@ -55,6 +55,21 @@ body {
   overflow-y: scroll;
   padding: 5% 10% 0 0;
 }
+.mainSection{
+  padding: 8% 2% 0 2%;
+}
+
+.batchCard{
+  margin: 20px 0px;
+}
+
+.studentListTable{
+  padding: 10px 0% 0 0%;
+}
+
+.addButton{
+  text-align: right;
+}
 
 .profiles{
   
@@ -131,6 +146,9 @@ body {
   }
   .navs{
     display: inline-block;
+  }
+  .mainSection{
+    padding: 20% 2% 0 2%;
   }
 }
 

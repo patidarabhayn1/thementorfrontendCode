@@ -1,8 +1,8 @@
 import React, { useState} from 'react';
 import 'antd/dist/antd.css';
-import '../styles/Register.css'
-import StudentSignUp from '../component/studentSignUp';
-import FacultySignUp from '../component/facultySignUp';
+import '../../styles/Register.css';
+import StudentSignUp from './studentSignUp';
+import FacultySignUp from './facultySignUp';
 const Register = () => {
 
     const [currentState, setCurrentState] = useState(1);

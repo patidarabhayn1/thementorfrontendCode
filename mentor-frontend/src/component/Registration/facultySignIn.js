@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import 'antd/dist/antd.css';
-import '../styles/Register.css'
+import '../../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import '../styles/Register.css'
+import '../../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import { Menu, Dropdown, Button, message, Select } from "antd";
@@ -15,31 +15,6 @@ export default function StudentSignUp() {
     const onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);
     };
-    function handleButtonClick(e) {
-        message.info("Click on left button.");
-        console.log("click left button", e);
-    }
-
-    function handleMenuClick(e) {
-        message.info("Click on menu item.");
-        console.log("click", e);
-    }
-    let dropdown = 'Degree';
-
-    const menu1 = (
-        <Menu onClick={handleMenuClick}>
-            <Menu.Item key="1" >
-                CS
-            </Menu.Item>
-            <Menu.Item key="2" >
-                EC
-            </Menu.Item>
-            <Menu.Item key="3" >
-                ME
-            </Menu.Item>
-        </Menu>
-    );
-    
 
     return (
         <div className="formss">

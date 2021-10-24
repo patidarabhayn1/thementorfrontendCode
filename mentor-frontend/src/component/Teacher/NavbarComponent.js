@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from "styled-components";
-import '../styles/profile.css';
+import '../../styles/profile.css';
 
 const Containers = styled.div`
   

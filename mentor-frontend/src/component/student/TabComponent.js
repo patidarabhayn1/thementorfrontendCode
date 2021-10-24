@@ -4,11 +4,11 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
-import Internship from './Tables/InternshipTable';
-import Courses from './Tables/CoursesTable';
-import Absence from './Tables/MajorAbsenceTable';
-import Activity from './Tables/IndisciplinaryActivityTable';
-import Result from './Tables/Result';
+import Internship from '../Tables/InternshipTable';
+import Courses from '../Tables/CoursesTable';
+import Absence from '../Tables/MajorAbsenceTable';
+import Activity from '../Tables/IndisciplinaryActivityTable';
+import Result from '../Tables/Result';
 import {Form } from 'react-bootstrap';
 
 function TabPanel(props) {
