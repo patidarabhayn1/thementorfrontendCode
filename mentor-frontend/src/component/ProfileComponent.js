@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import '../styles/profile.css';
 import ProfileUi from 'react-profile-card';
 import { Card, ButtonGroup,Button } from 'react-bootstrap';
-import Detail from './DetailComponent';
+import TabSection from './TabComponent';
 
 const Containers = styled.div`
   
@@ -315,7 +315,7 @@ function Profiles() {
                                             </div>
                                             <div className="info">
                                                 <p class="row-p" >Degree</p>
-                                                <p><strong>B.Tech</strong></p>
+                                                <p><strong>Bachelor of technology</strong></p>
                                             </div>
                                             <div className="info">
                                                 <p class="row-p">Branch</p>
@@ -330,14 +330,7 @@ function Profiles() {
                         </div>
                     </div>
                     <div className="content1">
-                        <div className="buttonss">
-                            <ButtonGroup>
-                                <Button>Left</Button>
-                                <Button>Middle</Button>
-                                <Button>Right</Button>
-                            </ButtonGroup>
-                        </div>
-                        <Detail />
+                        <TabSection/>
                     </div>
                 </div>
             </div>

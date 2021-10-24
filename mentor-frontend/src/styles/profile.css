@@ -82,13 +82,13 @@ body {
 .info{
   margin: 0 3%;
 }
-.content1{
+/* .content1{
   border: 1px solid grey;
   border-radius: 5px;
   width: 100%;
   flex: 1;
   height: 100%;
-}
+} */
 .buttonss{
   margin: 3% 0;
 }
@@ -100,4 +100,45 @@ body {
   bottom: 0;
   text-align: center;
   width: 100%;
+}
+.navs{
+  display: none;
+  
+}
+@media(max-width:1000px){
+  .prof-container{
+    justify-content: center;
+  }
+  .profiles{
+    padding: 10% 0 0 0 ;
+    flex-direction: column;
+    margin: 0;
+  }
+  .profile1{
+    padding: 0 0 5% 0;
+    margin: auto;
+    
+  }
+  .profile2{
+    flex:1;
+  }
+  .sideNavbars{
+    display: none;
+  }
+  .contents{
+    flex: 1;
+    padding: 0;
+  }
+  .navs{
+    display: inline-block;
+  }
+}
+
+@media(max-width:800px){
+  .profiles{
+    padding: 15% 0 0 0 ;
+  }
+  .profile1{
+    padding: 0 0 5% 0;
+  }
 }
