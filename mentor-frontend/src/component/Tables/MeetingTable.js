@@ -18,35 +18,35 @@ import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import {Button} from 'react-bootstrap';
 
-function createData(name, enrollment, branch, year, options) {
+function createData(date, advice, attendence, options) {
   return {
-    name,
-    enrollment,
-    branch,
-    year,
+    date,
+    advice,
+    attendence,
     options
   };
 }
 
-const options = <span><Button className="optionView" href="/student/123/profile">View</Button><Button variant="danger">Delete</Button></span>;
+const options = <span><Button variant="danger">Delete</Button></span>;
 
 const rows = [
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options)
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options),
+  createData("2020-10-10", "DO Courses", 99, options)
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -81,28 +81,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
+    id: "date",
     numeric: false,
-    disablePadding: true,
-    label: "Name"
+    disablePadding: false,
+    label: "Date"
   },
   {
-    id: "enrollment",
+    id: "advice",
     numeric: true,
     disablePadding: false,
-    label: "Enrollment No."
+    label: "Advice"
   },
   {
-    id: "branch",
+    id: "attendence",
     numeric: true,
     disablePadding: false,
-    label: "Branch"
-  },
-  {
-    id: "year",
-    numeric: true,
-    disablePadding: false,
-    label: "Year"
+    label: "Attendence"
   },
   {
     id: "options",
@@ -171,7 +165,7 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        Student's List
+        Meeting's List
       </Typography>
     </Toolbar>
   );
@@ -179,7 +173,7 @@ const EnhancedTableToolbar = (props) => {
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("Name");
+  const [orderBy, setOrderBy] = React.useState("date");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -235,7 +229,7 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.date}
                     >
                       <TableCell padding="checkbox"></TableCell>
                       <TableCell
@@ -244,11 +238,10 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.date}
                       </TableCell>
-                      <TableCell align="right">{row.enrollment}</TableCell>
-                      <TableCell align="right">{row.branch}</TableCell>
-                      <TableCell align="right">{row.year}</TableCell>
+                      <TableCell align="right">{row.advice}</TableCell>
+                      <TableCell align="right">{row.attendence}</TableCell>
                       <TableCell align="right">{row.options}</TableCell>
                     </TableRow>
                   );

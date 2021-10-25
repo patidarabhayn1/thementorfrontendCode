@@ -3,8 +3,9 @@ import StudentList from '../Tables/StudentList';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import MeetingList from '../Tables/MeetingTable';
 
-function ModalForm() {
+function AddStudentForm() {
     const onFinish = values => {
         console.log('Success:', values);
     };
@@ -15,7 +16,7 @@ function ModalForm() {
 
     return (
             <Form
-                name="login-form"
+                name="student-add-form"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -34,7 +35,7 @@ function ModalForm() {
     )
 }
 
-function MyVerticallyCenteredModal(props) {
+function AddStudentModal(props) {
     return (
       <Modal
         {...props}
@@ -48,7 +49,71 @@ function MyVerticallyCenteredModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ModalForm/>
+          <AddStudentForm/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide} variant="success">Save</Button>
+          <Button onClick={props.onHide} variant="danger">Discard</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+function AddMeetingForm() {
+  const onFinish = values => {
+      console.log('Success:', values);
+  };
+
+  const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+  };
+
+  return (
+          <Form
+              name="student-add-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+          >
+            <Form.Group>
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="date" placeholder="ex. dd-mm-yy" />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Advice</Form.Label>
+              <Form.Control type="text" placeholder="Do Some Internships" />
+              <Form.Text className="text-muted">
+                What advice you have given to mentees
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Attendece</Form.Label>
+              <Form.Control type="number" placeholder="ex. 88.33%" />
+              <Form.Text className="text-muted">
+                  (in %)
+              </Form.Text>
+            </Form.Group>
+          </Form>
+  )
+}
+
+function AddMeetingModal(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Add Meeting Record
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddMeetingForm/>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide} variant="success">Save</Button>
@@ -59,22 +124,36 @@ function MyVerticallyCenteredModal(props) {
   }
 
 function BatchComponent() {
-    const [modalShow, setModalShow] = React.useState(false);
+    const [modalShow1, setModalShow1] = React.useState(false);
+    const [modalShow2, setModalShow2] = React.useState(false);
 
     return (
         <div className="studentList">
             <div  className="addButton">
-                <Button variant="success" onClick={() => setModalShow(true)}>
+                <Button variant="success" onClick={() => setModalShow1(true)}>
                     Add Student
                 </Button>
 
-                <MyVerticallyCenteredModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
+                <AddStudentModal
+                    show={modalShow1}
+                    onHide={() => setModalShow1(false)}
                 />
             </div>
             <div className="studentListTable">
                 <StudentList/>
+            </div>
+            <div  className="addButton">
+                <Button variant="success" onClick={() => setModalShow2(true)}>
+                    Add Meeting
+                </Button>
+
+                <AddMeetingModal
+                    show={modalShow2}
+                    onHide={() => setModalShow2(false)}
+                />
+            </div>
+            <div className="studentListTable">
+                <MeetingList/>
             </div>
         </div>
     )
