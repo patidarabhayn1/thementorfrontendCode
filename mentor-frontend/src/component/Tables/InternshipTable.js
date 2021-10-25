@@ -20,7 +20,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function ModalForm() {
+function AddInternshipForm() {
     const onFinish = values => {
         console.log('Success:', values);
     };
@@ -37,20 +37,30 @@ function ModalForm() {
                 onFinishFailed={onFinishFailed}
             >
               <Form.Group>
-                <Form.Label>Student's Enrollment No.</Form.Label>
-                <Form.Control type="email" placeholder="ex. EN19CS306016" />
-                <Form.Text className="text-muted">
-                  We will show his details
-                </Form.Text>
+                <Form.Label>Domain</Form.Label>
+                <Form.Control type="text" placeholder="ex. Web Dev" />
               </Form.Group>
-                <Button variant="primary" type="submit">
-                  Fetch Details
-                </Button>
+              <Form.Group>
+                <Form.Label>Company Name</Form.Label>
+                <Form.Control type="text" placeholder="ex. Being Gourav" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>From</Form.Label>
+                <Form.Control type="date"/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>To</Form.Label>
+                <Form.Control type="date"/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Certificate</Form.Label>
+                <Form.Control type="file" accept="application/pdf"/>
+              </Form.Group>
             </Form>
     )
 }
 
-function MyVerticallyCenteredModal(props) {
+function AddInternshipModal(props) {
     return (
       <Modal
         {...props}
@@ -60,11 +70,11 @@ function MyVerticallyCenteredModal(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add Student
+            Add Internship Record
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ModalForm/>
+          <AddInternshipForm/>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide} variant="success">Save</Button>
@@ -84,7 +94,7 @@ function createData(domain, company, from, to, certificate) {
   };
 }
 
-const viewButton = <button className="btn btn-success">View</button>;
+const viewButton = <span><button className="btn btn-success optionView">View</button><button className="btn btn-danger">Delete</button></span>;
 
 const rows = [
   createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
@@ -166,7 +176,7 @@ const headCells = [
     id: "certificate",
     numeric: true,
     disablePadding: false,
-    label: "Certificate"
+    label: "Options"
   }
 ];
 
@@ -269,6 +279,16 @@ export default function EnhancedTable() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
+            <div  className="addButton">
+                <Button variant="success" onClick={() => setModalShow(true)}>
+                    Add Record
+                </Button>
+
+                <AddInternshipModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+            </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -281,18 +301,6 @@ export default function EnhancedTable() {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            <div className="studentList">
-                <div  className="addButton">
-                    <Button variant="success" onClick={() => setModalShow(true)}>
-                        Add Student
-                    </Button>
-
-                    <MyVerticallyCenteredModal
-                        show={modalShow}
-                        onHide={() => setModalShow(false)}
-                    />
-                </div>
-            </div>
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}

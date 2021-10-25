@@ -16,6 +16,73 @@ import Paper from "@mui/material/Paper";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+function AddInternshipForm() {
+  const onFinish = values => {
+      console.log('Success:', values);
+  };
+
+  const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+  };
+
+  return (
+          <Form
+              name="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+          >
+            <Form.Group>
+              <Form.Label>Domain</Form.Label>
+              <Form.Control type="text" placeholder="ex. Web Dev" />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Platform</Form.Label>
+              <Form.Control type="text" placeholder="ex. Coursera" />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>From</Form.Label>
+              <Form.Control type="date"/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>To</Form.Label>
+              <Form.Control type="date"/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Certificate</Form.Label>
+              <Form.Control type="file" accept="application/pdf"/>
+            </Form.Group>
+          </Form>
+  )
+}
+
+function AddInternshipModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add Course Record
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddInternshipForm/>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide} variant="success">Save</Button>
+        <Button onClick={props.onHide} variant="danger">Discard</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function createData(domain, platform, from, to, certificate) {
   return {
@@ -27,7 +94,7 @@ function createData(domain, platform, from, to, certificate) {
   };
 }
 
-const viewButton = <button className="btn btn-success">View</button>;
+const viewButton = <span><button className="btn btn-success optionView">View</button><button className="btn btn-danger">Delete</button></span>;
 
 const rows = [
   createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
@@ -109,7 +176,7 @@ const headCells = [
     id: "certificate",
     numeric: true,
     disablePadding: false,
-    label: "Certificate"
+    label: "Options"
   }
 ];
 
@@ -179,6 +246,7 @@ const EnhancedTableToolbar = (props) => {
 };
 
 export default function EnhancedTable() {
+  const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("platform");
   const [page, setPage] = React.useState(0);
@@ -211,6 +279,16 @@ export default function EnhancedTable() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
+            <div  className="addButton">
+                <Button variant="success" onClick={() => setModalShow(true)}>
+                    Add Record
+                </Button>
+
+                <AddInternshipModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+            </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

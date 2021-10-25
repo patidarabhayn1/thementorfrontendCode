@@ -3,6 +3,7 @@ import Header from './HeaderComponent';
 import NavigationBar from './NavbarComponent';
 import { Route, Redirect, Switch} from 'react-router-dom';
 import ProfileComponent from './ProfileComponent';
+import AddResultComponent from './addResultComponent';
 
 function Main() {
     return (
@@ -16,6 +17,7 @@ function Main() {
             <div className="container mainSection">
                 <Switch>
                     <Route path="/student/:studentId/profile" component={ProfileComponent}/>
+                    <Route path="/student/:studentId/addResult" component={AddResultComponent}/>
                     <Redirect to="/student/home"/>
                 </Switch>
             </div>

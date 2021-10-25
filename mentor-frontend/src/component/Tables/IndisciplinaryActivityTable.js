@@ -16,6 +16,69 @@ import Paper from "@mui/material/Paper";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+function AddInternshipForm() {
+  const onFinish = values => {
+      console.log('Success:', values);
+  };
+
+  const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+  };
+
+  return (
+          <Form
+              name="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+          >
+            <Form.Group>
+              <Form.Label>Activity</Form.Label>
+              <Form.Control type="text" />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="date"/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Punishment</Form.Label>
+              <Form.Control type="text"/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Remark</Form.Label>
+              <Form.Control type="text" placeholder="ex. Web Dev" />
+            </Form.Group>
+          </Form>
+  )
+}
+
+function AddInternshipModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add Indisciplinary Activity Record
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddInternshipForm/>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide} variant="success">Save</Button>
+        <Button onClick={props.onHide} variant="danger">Discard</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function createData(activity, date, punishment, remark, button) {
   return {
@@ -172,13 +235,14 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        Indischiplinary Activities
+        Indisciplinary Activities
       </Typography>
     </Toolbar>
   );
 };
 
 export default function EnhancedTable() {
+  const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
   const [page, setPage] = React.useState(0);
@@ -211,6 +275,16 @@ export default function EnhancedTable() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
+            <div  className="addButton">
+                <Button variant="success" onClick={() => setModalShow(true)}>
+                    Add Record
+                </Button>
+
+                <AddInternshipModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+            </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

@@ -10,6 +10,7 @@ import Absence from '../Tables/MajorAbsenceTable';
 import Activity from '../Tables/IndisciplinaryActivityTable';
 import Result from '../Tables/Result';
 import {Form } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -80,16 +81,26 @@ export default function BasicTabs() {
         <Courses/>
       </TabPanel>
       <TabPanel value={value} index={2}>
+             <div  className="addButton">
+                <Button variant="success" href="/student/addResult">
+                    Add Result
+                </Button>
+            </div>
         <Form>
-          <Form.Label>Select Semester</Form.Label>
-          <Form.Select aria-label="Default select example">
-            <option>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
+          <Form.Group>
+            <Form.Label>Select Semester</Form.Label>
+            <Form.Select aria-label="Default select example">
+              <option>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </Form.Select>
+          </Form.Group>
+            <Button variant="success" type="submit" style={{marginTop: 10}} href="/student/:studentId/result/:resutId">
+              Submit
+            </Button>
         </Form>
-        <Result/>
+        {/* <Result/> */}
       </TabPanel>
       <TabPanel value={value} index={3}>
           <Absence/>
