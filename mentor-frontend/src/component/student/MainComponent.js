@@ -3,7 +3,8 @@ import Header from './HeaderComponent';
 import NavigationBar from './NavbarComponent';
 import { Route, Redirect, Switch} from 'react-router-dom';
 import ProfileComponent from './ProfileComponent';
-import AddResultComponent from './addResultComponent';
+import ResultComponent from './ResultComponent';
+import SubjectComponent from './SubjectComponent';
 
 function Main() {
     return (
@@ -17,12 +18,13 @@ function Main() {
             <div className="container mainSection">
                 <Switch>
                     <Route path="/student/:studentId/profile" component={ProfileComponent}/>
-                    <Route path="/student/:studentId/addResult" component={AddResultComponent}/>
+                    <Route exact path="/student/:studentId/result/:resultId" component={ResultComponent}/>
+                    <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
                     <Redirect to="/student/home"/>
                 </Switch>
             </div>
         </div>
-    )
+    );
 }
 
 export default Main;

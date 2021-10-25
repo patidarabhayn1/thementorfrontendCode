@@ -16,38 +16,49 @@ import Paper from "@mui/material/Paper";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
+import {Link} from 'react-router-dom';
 
-function createData(domain, company, from, to, certificate) {
+function createData(courseCode, name, credits, options) {
   return {
-    domain,
-    company,
-    from,
-    to,
-    certificate
+    courseCode,
+    name,
+    credits,
+    options
   };
 }
 
-const viewButton = <button className="btn btn-success">View</button>;
-
+const viewButton = (studentId, resultId, Id) =>  {
+  return(
+  <span>
+    <button className="btn btn-success optionView">
+      <Link to={`/student/${studentId}/result/${resultId}/${Id}`}>
+        View
+      </Link>
+    </button>
+    <button className="btn btn-danger">
+      Delete
+      </button>
+    </span>
+    );
+}
 const rows = [
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton)
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01")),
+  createData("EN3BS01", "Project", "3", viewButton("EN19CS306001", 123456, "EN3BS01"))
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -82,34 +93,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "domain",
+    id: "courseCode",
     numeric: false,
     disablePadding: true,
-    label: "Domain"
+    label: "Course Code"
   },
   {
-    id: "company",
+    id: "name",
     numeric: true,
     disablePadding: false,
-    label: "Company Name"
+    label: "Subject Name"
   },
   {
-    id: "from",
+    id: "credits",
     numeric: true,
     disablePadding: false,
-    label: "From"
+    label: "Credits"
   },
   {
-    id: "to",
+    id: "options",
     numeric: true,
     disablePadding: false,
-    label: "To"
-  },
-  {
-    id: "certificate",
-    numeric: true,
-    disablePadding: false,
-    label: "Certificate"
+    label: "Options"
   }
 ];
 
@@ -172,7 +177,7 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        Semester Details
+        Subjects' List
       </Typography>
     </Toolbar>
   );
@@ -180,7 +185,7 @@ const EnhancedTableToolbar = (props) => {
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("company");
+  const [orderBy, setOrderBy] = React.useState("courseCode");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -236,7 +241,7 @@ export default function EnhancedTable() {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.domain}
+                      key={row.courseCode}
                     >
                       <TableCell padding="checkbox"></TableCell>
                       <TableCell
@@ -245,12 +250,11 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.domain}
+                        {row.courseCode}
                       </TableCell>
-                      <TableCell align="right">{row.company}</TableCell>
-                      <TableCell align="right">{row.from}</TableCell>
-                      <TableCell align="right">{row.to}</TableCell>
-                      <TableCell align="right">{row.certificate}</TableCell>
+                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell align="right">{row.credits}</TableCell>  
+                      <TableCell align="right">{row.options}</TableCell>
                     </TableRow>
                   );
                 })}

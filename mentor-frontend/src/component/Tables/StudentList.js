@@ -17,6 +17,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import {Button} from 'react-bootstrap';
+import {Link } from 'react-router-dom';
 
 function createData(name, enrollment, branch, year, options) {
   return {
@@ -28,7 +29,7 @@ function createData(name, enrollment, branch, year, options) {
   };
 }
 
-const options = <span><Button className="optionView" href="/student/123/profile">View</Button><Button variant="danger">Delete</Button></span>;
+const options = <span><Button className="optionView"><Link to ="/student/123/profile">View</Link></Button><Button variant="danger">Delete</Button></span>;
 
 const rows = [
   createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),

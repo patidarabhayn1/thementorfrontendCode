@@ -188,7 +188,7 @@ function NavigationBar() {
             <div className="sideNavbarss">
                 <Containers>
                     <Buttons clicked={click} onClick={() => handleClick()}>
-                        Click
+                        
                     </Buttons>
                     <SidebarContainer>
                         <Logo>

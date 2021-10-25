@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, Button} from 'react-bootstrap';
 import {Row } from 'reactstrap';
+import {Link } from 'react-router-dom';
 
 function TeacherHome() {
     return (
@@ -14,7 +15,7 @@ function TeacherHome() {
                     20 Members
                     17 Meetings
                 </Card.Text>
-                <Button variant="primary" href="/teacher/batch/123">See Batch</Button>
+                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
             </Card.Body>
             </Card>
             <Card className="col-lg-3 offset-lg-1 batchCard">
@@ -25,7 +26,7 @@ function TeacherHome() {
                     20 Members
                     17 Meetings
                 </Card.Text>
-                <Button variant="primary">See Batch</Button>
+                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
             </Card.Body>
             </Card>
             <Card className="col-lg-3 offset-lg-1 batchCard">
@@ -36,7 +37,7 @@ function TeacherHome() {
                     20 Members
                     17 Meetings
                 </Card.Text>
-                <Button variant="primary">See Batch</Button>
+                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
             </Card.Body>
             </Card>
             <Card className="col-lg-3 offset-lg-1 batchCard">
@@ -47,7 +48,7 @@ function TeacherHome() {
                     20 Members
                     17 Meetings
                 </Card.Text>
-                <Button variant="primary">See Batch</Button>
+                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
             </Card.Body>
             </Card>
             <Card className="col-lg-3 offset-lg-1 batchCard">
@@ -58,7 +59,7 @@ function TeacherHome() {
                     20 Members
                     17 Meetings
                 </Card.Text>
-                <Button variant="primary">See Batch</Button>
+                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
             </Card.Body>
             </Card>
             <Card className="col-lg-3 offset-lg-1 batchCard">
@@ -69,9 +70,10 @@ function TeacherHome() {
                     20 Members
                     17 Meetings
                 </Card.Text>
-                <Button variant="primary">See Batch</Button>
+                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
             </Card.Body>
             </Card>
+
             </Row>
         </div>
     )

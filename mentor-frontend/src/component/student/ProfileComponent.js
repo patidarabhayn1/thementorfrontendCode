@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import styled, { css } from "styled-components";
 import '../../styles/profile.css';
 import ProfileUi from 'react-profile-card';
-import { Card, ButtonGroup, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import TabSection from './TabComponent';
 
 function Profiles() {

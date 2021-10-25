@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -8,9 +9,80 @@ import Internship from '../Tables/InternshipTable';
 import Courses from '../Tables/CoursesTable';
 import Absence from '../Tables/MajorAbsenceTable';
 import Activity from '../Tables/IndisciplinaryActivityTable';
-import Result from '../Tables/Result';
-import {Form } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+function AddInternshipForm() {
+  const onFinish = values => {
+      console.log('Success:', values);
+  };
+
+  const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+  };
+
+  return (
+          <Form
+              name="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+          >
+            
+        <p style={{color: "red"}}>PLEASE ENTER DETAILS ONLY WHICH ARE AVAILABLE</p>
+            <Form.Group>
+              <Form.Label>Semester</Form.Label>
+              <Form.Select aria-label="Default select example">
+                <option>-</option>
+                <option value="1">Odd</option>
+                <option value="2">Even</option>
+                <option value="3">Makeup</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Year</Form.Label>
+              <Form.Control type="number" min="1" max="5" />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>CGPA</Form.Label>
+              <Form.Control type="number" min="1" max="5" />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>SGPA</Form.Label>
+              <Form.Control type="number" min="0" max="10" />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Credits Earned</Form.Label>
+              <Form.Control type="number" min="0" max="30 "/>
+            </Form.Group>
+          </Form>
+  )
+}
+
+function AddInternshipModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add Semester
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddInternshipForm/>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide} variant="success">Save</Button>
+        <Button onClick={props.onHide} variant="danger">Discard</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,6 +118,7 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
+  const [modalShow, setModalShow] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -81,10 +154,15 @@ export default function BasicTabs() {
         <Courses/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-             <div  className="addButton">
-                <Button variant="success" href="/student/addResult">
-                    Add Result
+            <div  className="addButton">
+                <Button variant="success" onClick={() => setModalShow(true)}>
+                    Add Semester
                 </Button>
+
+                <AddInternshipModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
             </div>
         <Form>
           <Form.Group>
@@ -96,8 +174,10 @@ export default function BasicTabs() {
               <option value="3">Three</option>
             </Form.Select>
           </Form.Group>
-            <Button variant="success" type="submit" style={{marginTop: 10}} href="/student/:studentId/result/:resutId">
+            <Button variant="success" type="submit" style={{marginTop: 10}}>
+              <Link to="/student/:studentId/result/:resutId">
               Submit
+              </Link>
             </Button>
         </Form>
         {/* <Result/> */}

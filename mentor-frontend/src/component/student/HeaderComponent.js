@@ -3,14 +3,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Container } from "react-bootstrap";
-
+import {Link } from 'react-router-dom';
 
 class Header extends Component {
     render() {
         return (
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand href="#home">The Mentor</Navbar.Brand>
+                    <Navbar.Brand><Link to="/teacher/home">The Mentor</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
 
