@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import '../../styles/Register.css';
 import StudentSignIn from './studentSignIn';
 import FacultySignIn from './facultySignIn';
-const Register = () => {
+const Register = (props) => {
 
     const [currentState, setCurrentState] = useState(1);
 
@@ -46,7 +46,17 @@ const Register = () => {
                     </div>
                     <div className='formBody'>
                         {
-                            currentState ? <FacultySignIn /> : <StudentSignIn />
+                            currentState ? 
+                            <FacultySignIn 
+                                auth= {props.auth} 
+                                loginTeacher = {props.loginTeacher} 
+                                logoutTeacher = {props.logoutTeacher}
+                            /> 
+                            : <StudentSignIn 
+                                auth= {props.auth} 
+                                loginStudent = {props.loginStudent} 
+                                logoutStudent = {props.logoutStudent}
+                            />
                         }
                     </div>
                 </div>

@@ -18,6 +18,7 @@ function Main() {
             <div className="container mainSection">
                 <Switch>
                     <Route path="/student/:studentId/profile" component={ProfileComponent}/>
+                    <Route path="/student/home" component={ProfileComponent}/>
                     <Route exact path="/student/:studentId/result/:resultId" component={ResultComponent}/>
                     <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
                     <Redirect to="/student/home"/>
