@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function MessageComponent(props) {
     useEffect(() => {
         notify();
+        setTimeout(props.removeMessage,5000);
     })
     const notify = () => toast(
         props.message, 

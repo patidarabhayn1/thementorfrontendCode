@@ -5,7 +5,7 @@ import Signup from './Registration/signUp';
 import TeacherMain from './Teacher/MainComponent';
 import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
-import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile} from '../redux/ActionCreators';
+import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage} from '../redux/ActionCreators';
 // import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
@@ -23,6 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
     logoutStudent: () => dispatch(logoutStudent()),
     logoutTeacher: () => dispatch(logoutTeacher()),
     loadTeacherProfile: () => dispatch(loadTeacherProfile()),
+    removeMessage: () => dispatch(removeMessage())
 })
 
 class Home extends Component{
@@ -47,6 +48,7 @@ class Home extends Component{
                     message={this.props.message} 
                     teacher = {this.props.teacher}
                     logoutTeacher = {this.props.logoutTeacher}
+                    removeMessage = {this.props.removeMessage}
                 />
             );
         }
