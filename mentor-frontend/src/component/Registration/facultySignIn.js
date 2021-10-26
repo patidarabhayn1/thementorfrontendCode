@@ -5,6 +5,8 @@ import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import { Link, NavLink } from 'react-router-dom';
+import Message from './messageComponent';
+
 export default function facultySignIn(props) {
     function handleLogin(values) {
         props.loginTeacher({username: values.username, password: values.password});

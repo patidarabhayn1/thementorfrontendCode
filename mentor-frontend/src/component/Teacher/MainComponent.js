@@ -5,20 +5,20 @@ import { Route, Redirect, Switch} from 'react-router-dom';
 import TeacherHome from './HomeComponent';
 import BatchComponent from './BatchComponent';
 
-function Main() {
+function Main(props) {
     return (
         <div className="app">
             <div className='navss'>
-                <Header />
+                <Header/>
             </div>
             <div className="containers">
-                <NavigationBar />
+                <NavigationBar teacher={props.teacher}/>
             </div>
             <div className="container mainSection">
                 <Switch>
-                    <Route exact path="/teacher/home" component={TeacherHome}/>
-                    <Route path="/teacher/batch/:batchId" component={BatchComponent}/>
-                    <Redirect to="/teacher/home"/>
+                    <Route path="/teacher/home" component = {() => <TeacherHome message={props.message} />}/>
+                    <Route path="/teacher/batch/:batchId" component = {() => <BatchComponent message={props.message} />}/>
+                    <Redirect to="/teacher/home" component = {() => <TeacherHome message={props.message} />}/>
                 </Switch>
             </div>
         </div>

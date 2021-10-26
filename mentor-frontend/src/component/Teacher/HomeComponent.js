@@ -5,6 +5,8 @@ import {Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import MessageComponent from '../Registration/messageComponent';
+
 function AddInternshipForm() {
     const onFinish = values => {
         console.log('Success:', values);
@@ -61,10 +63,16 @@ function AddInternshipForm() {
     );
   }
 
-function TeacherHome() {
+function TeacherHome(props) {
     const [modalShow, setModalShow] = React.useState(false);
     return (
         <>
+          {
+            props.message.showMessage ?
+              <MessageComponent message={props.message.showMessage}/>
+            :
+              <div></div>
+          }
         <div  className="addButton" style={{marginBottom: "10px"}}>
             <Button variant="success" onClick={() => setModalShow(true)}>
                 Add Batch

@@ -56,6 +56,7 @@ export const loginTeacher = (creds) => (dispatch) => {
             // Dispatch the success action
             // dispatch(fetchFavorites());
             dispatch(teacherReceiveLogin(response));
+            dispatch(addMessage("LOGIN SUCCECCFUL"));
             dispatch(redirect("/teacher/home"));
         }
         else {
@@ -175,13 +176,79 @@ export const logoutStudent = () => (dispatch) => {
     dispatch(studentReceiveLogout())
 }
 
-// export const removeRedirect = () => {
-//     return{
-//         type: ActionTypes.REMOVE_REDIRECT
-//     }
-// }
-
 export const redirect = link => {
     console.log("=== REDIRECT ACTION DISPATCHED ===");
     return { type: ActionTypes.REDIRECT, payload: link };
   };
+
+
+export const showMessage = (message) => {
+    return {
+        type:ActionTypes.MESSAGE,
+        payload: message
+    }
+}
+
+export const remMessage = (message) => {
+    return {
+        type:ActionTypes.REMOVE_MESSAGE,
+    }
+}
+
+export const removeMessage = () => (dispatch) => {
+    dispatch(remMessage());
+}
+
+export const addMessage = (message) => (dispatch) => {
+    dispatch(showMessage(message));
+}
+
+export const teacherProfileLoading = () => {
+    return {
+        type:ActionTypes.TEACHER_PROFILE_LOADING
+    }
+}
+export const teacherProfilefailed = (errMess) => {
+    return {
+        type:ActionTypes.TEACHER_PROFILE_FAILED,
+        payload: errMess
+    }
+}
+export const teacherProfileSuccess = (user) => {
+    console.log("HELLO");
+    return {
+        type:ActionTypes.TEACHER_PROFILE_SUCCESS,
+        payload: user
+    }
+}
+
+export const loadTeacherProfile = () => (dispatch) => {
+    dispatch(teacherProfileLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'teachers/profile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(teacherProfileSuccess(response)))
+    .catch(error => dispatch(teacherProfilefailed(error)))
+}
