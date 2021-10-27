@@ -8,21 +8,18 @@ export const teacherRequestLogin = (creds) => {
         creds
     }
 }
-  
 export const teacherReceiveLogin = (response) => {
     return {
         type: ActionTypes.TEACHER_LOGIN_SUCCESS,
         token: response.token
     }
 }
-  
 export const teacherLoginError = (message) => {
     return {
         type: ActionTypes.TEACHER_LOGIN_FAILURE,
         message
     }
 }
-
 export const loginTeacher = (creds) => (dispatch) => {
     // We dispatch teacherRequestLogin to kickoff the call to the API
     dispatch(teacherRequestLogin(creds))
@@ -67,19 +64,16 @@ export const loginTeacher = (creds) => (dispatch) => {
     })
     .catch(error => dispatch(teacherLoginError(error.message)))
 };
-
 export const teacherRequestLogout = () => {
     return {
       type: ActionTypes.TEACHER_LOGOUT_REQUEST
     }
 }
-  
 export const teacherReceiveLogout = () => {
     return {
       type: ActionTypes.TEACHER_LOGOUT_SUCCESS
     }
 }
-
 export const logoutTeacher = () => (dispatch) => {
     dispatch(teacherRequestLogout())
     localStorage.removeItem('token');
@@ -95,22 +89,19 @@ export const studentRequestLogin = (creds) => {
         type: ActionTypes.STUDENT_LOGIN_REQUEST,
         creds
     }
-}
-  
+}  
 export const studentReceiveLogin = (response) => {
     return {
         type: ActionTypes.STUDENT_LOGIN_SUCCESS,
         token: response.token
     }
-}
-  
+} 
 export const studentLoginError = (message) => {
     return {
         type: ActionTypes.STUDENT_LOGIN_FAILURE,
         message
     }
 }
-
 export const loginStudent = (creds) => (dispatch) => {
     // We dispatch studentRequestLogin to kickoff the call to the API
     dispatch(studentRequestLogin(creds))
@@ -153,13 +144,11 @@ export const loginStudent = (creds) => (dispatch) => {
     })
     .catch(error => dispatch(studentLoginError(error.message)))
 };
-
 export const studentRequestLogout = () => {
     return {
       type: ActionTypes.STUDENT_LOGOUT_REQUEST
     }
 }
-  
 export const studentReceiveLogout = () => {
     return {
       type: ActionTypes.STUDENT_LOGOUT_SUCCESS
@@ -188,17 +177,14 @@ export const showMessage = (message) => {
         payload: message
     }
 }
-
 export const remMessage = (message) => {
     return {
         type:ActionTypes.REMOVE_MESSAGE,
     }
 }
-
 export const removeMessage = () => (dispatch) => {
     dispatch(remMessage());
 }
-
 export const addMessage = (message) => (dispatch) => {
     dispatch(showMessage(message));
 }
@@ -208,7 +194,7 @@ export const teacherProfileLoading = () => {
         type:ActionTypes.TEACHER_PROFILE_LOADING
     }
 }
-export const teacherProfilefailed = (errMess) => {
+export const teacherProfileFailed = (errMess) => {
     return {
         type:ActionTypes.TEACHER_PROFILE_FAILED,
         payload: errMess
@@ -221,7 +207,6 @@ export const teacherProfileSuccess = (user) => {
         payload: user
     }
 }
-
 export const loadTeacherProfile = () => (dispatch) => {
     dispatch(teacherProfileLoading());
     const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -250,5 +235,56 @@ export const loadTeacherProfile = () => (dispatch) => {
     })
     .then(response => response.json())
     .then(response => dispatch(teacherProfileSuccess(response)))
-    .catch(error => dispatch(teacherProfilefailed(error)))
+    .then(() => dispatch(loadBatches()))
+    .catch(error => dispatch(teacherProfileFailed(error)))
+}
+
+
+export const batchesLoading = () => {
+    return{
+        type: ActionTypes.BATCHES_LOADING
+    }
+}
+export const batchesSuccess = (batches) => {
+    return{
+        type: ActionTypes.BATCHES_SUCCESS,
+        payload: batches
+    }
+}
+export const batchesFailed = (errMess) => {
+    return{
+        type: ActionTypes.BATCHES_FAILED,
+        payload: errMess
+    }
+}
+
+export const loadBatches = () => (dispatch) => {
+    dispatch(batchesLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'mentoring', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(batchesSuccess(response)))
+    .catch(error => dispatch(batchesFailed(error)))
 }

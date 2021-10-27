@@ -33,7 +33,7 @@ function Main(props) {
             </div>
             <div className="container mainSection">
                 <Switch>
-                    <Route path="/teacher/home" component = {() => <TeacherHome message={props.message} />}/>
+                    <Route path="/teacher/home" component = {() => <TeacherHome message={props.message} batches = {props.batches}/>}/>
                     <Route path="/teacher/batch/:batchId" component = {() => <BatchComponent message={props.message} />}/>
                     <Redirect to="/teacher/home" component = {() => <TeacherHome message={props.message} />}/>
                 </Switch>

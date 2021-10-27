@@ -5,6 +5,7 @@ import logger from 'redux-logger';
 import Redirect from './ui';
 import Message from './message';
 import Teacher from './teacherProfile';
+import Batches from './batches';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -12,7 +13,8 @@ export const ConfigureStore = () => {
             redirect: Redirect,
             auth: Auth,
             message: Message,
-            teacher: Teacher
+            teacher: Teacher,
+            batches: Batches
         }),
         applyMiddleware(thunk, logger)
     );

@@ -13,7 +13,8 @@ const mapStateToProps = state => {
         auth: state.auth,
         redirect: state.redirect,
         message: state.message,
-        teacher: state.teacher
+        teacher: state.teacher,
+        batches: state.batches
     }
 }
 
@@ -49,6 +50,7 @@ class Home extends Component{
                     teacher = {this.props.teacher}
                     logoutTeacher = {this.props.logoutTeacher}
                     removeMessage = {this.props.removeMessage}
+                    batches = {this.props.batches}
                 />
             );
         }
@@ -62,13 +64,14 @@ class Home extends Component{
                     state: { from: props.location }
                   }} />
             )} />
-          );
+        );
         
         if (this.props.redirect.redirectTo) {
             const path=this.props.redirect.redirectTo;
             this.props.redirect.redirectTo = false;
             return <Redirect to={path} />;
         }
+
         return(
                 <Switch>
                     <Route path = "/login" component = {LoginPage}/>

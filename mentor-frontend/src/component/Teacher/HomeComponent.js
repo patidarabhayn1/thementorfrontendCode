@@ -5,62 +5,100 @@ import {Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import LoadingComponent from'../LoadingComponent';
 
 function AddInternshipForm() {
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
+  const onFinish = values => {
+      console.log('Success:', values);
+  };
+
+  const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+  };
+
+  return (
+          <Form
+              name="login-form"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+          >
+            <Form.Group>
+              <Form.Label>Branch</Form.Label>
+              <Form.Control type="text"/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Year</Form.Label>
+              <Form.Control type="number"/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>From</Form.Label>
+              <Form.Control type="date" />
+            </Form.Group>
+          </Form>
+  )
+}
   
-    const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-    };
-  
-    return (
-            <Form
-                name="login-form"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-            >
-              <Form.Group>
-                <Form.Label>Branch</Form.Label>
-                <Form.Control type="text"/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Year</Form.Label>
-                <Form.Control type="number"/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>From</Form.Label>
-                <Form.Control type="date" />
-              </Form.Group>
-            </Form>
-    )
-  }
-  
-  function AddInternshipModal(props) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Add Batch
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <AddInternshipForm/>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide} variant="success">Save</Button>
-          <Button onClick={props.onHide} variant="danger">Discard</Button>
-        </Modal.Footer>
-      </Modal>
+function AddInternshipModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add Batch
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddInternshipForm/>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide} variant="success">Save</Button>
+        <Button onClick={props.onHide} variant="danger">Discard</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function Batches({batches}){
+  if(batches.errMess) {
+    return(
+      <h3>{batches.errMess}</h3>
     );
   }
+  else if(batches.batches == null) {
+    return(
+      <LoadingComponent/>
+    );
+  }
+  else {
+    var x = 0;
+    return(
+      <>
+      {
+        batches.batches.map((batch) => {
+          return(
+            <Card className="col-lg-3 offset-lg-1 batchCard">
+            <Card.Header>Batch {x=x+1}</Card.Header>
+            <Card.Body>
+                <Card.Title>{batch.branch}{" " + batch.year}</Card.Title>
+                <Card.Text>
+                    Meetings Count: {batch.meetings.length}<br/>
+                    Mentoring From: {batch.year}
+                </Card.Text>
+                <Button variant="primary"><Link to={"/teacher/batch/"+batch._id}>View Batch</Link></Button>
+            </Card.Body>
+          </Card>
+          );
+        })
+      }
+      </>
+    );
+  }
+}
 
 function TeacherHome(props) {
     const [modalShow, setModalShow] = React.useState(false);
@@ -79,73 +117,7 @@ function TeacherHome(props) {
 
         <div className="TeacherHome">
             <Row>
-            <Card className="col-lg-3 offset-lg-1 batchCard">
-            <Card.Header>Batch 1</Card.Header>
-            <Card.Body>
-                <Card.Title>Computer Science and Business System</Card.Title>
-                <Card.Text>
-                    20 Members
-                    17 Meetings
-                </Card.Text>
-                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
-            </Card.Body>
-            </Card>
-            <Card className="col-lg-3 offset-lg-1 batchCard">
-            <Card.Header>Batch 1</Card.Header>
-            <Card.Body>
-                <Card.Title>Computer Science and Business System</Card.Title>
-                <Card.Text>
-                    20 Members
-                    17 Meetings
-                </Card.Text>
-                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
-            </Card.Body>
-            </Card>
-            <Card className="col-lg-3 offset-lg-1 batchCard">
-            <Card.Header>Batch 1</Card.Header>
-            <Card.Body>
-                <Card.Title>Computer Science and Business System</Card.Title>
-                <Card.Text>
-                    20 Members
-                    17 Meetings
-                </Card.Text>
-                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
-            </Card.Body>
-            </Card>
-            <Card className="col-lg-3 offset-lg-1 batchCard">
-            <Card.Header>Batch 1</Card.Header>
-            <Card.Body>
-                <Card.Title>Computer Science and Business System</Card.Title>
-                <Card.Text>
-                    20 Members
-                    17 Meetings
-                </Card.Text>
-                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
-            </Card.Body>
-            </Card>
-            <Card className="col-lg-3 offset-lg-1 batchCard">
-            <Card.Header>Batch 1</Card.Header>
-            <Card.Body>
-                <Card.Title>Computer Science and Business System</Card.Title>
-                <Card.Text>
-                    20 Members
-                    17 Meetings
-                </Card.Text>
-                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
-            </Card.Body>
-            </Card>
-            <Card className="col-lg-3 offset-lg-1 batchCard">
-            <Card.Header>Batch 1</Card.Header>
-            <Card.Body>
-                <Card.Title>Computer Science and Business System</Card.Title>
-                <Card.Text>
-                    20 Members
-                    17 Meetings
-                </Card.Text>
-                <Button variant="primary"><Link to="/teacher/batch/:batchId">The Mentor</Link></Button>
-            </Card.Body>
-            </Card>
-
+              <Batches batches = {props.batches}/>
             </Row>
         </div>
         </>
