@@ -63,7 +63,7 @@ function AddInternshipModal(props) {
   );
 }
 
-function Batches({batches}){
+function Batches({batches, loadBatch}){
   if(batches.errMess) {
     return(
       <h3>{batches.errMess}</h3>
@@ -81,7 +81,7 @@ function Batches({batches}){
       {
         batches.batches.map((batch) => {
           return(
-            <Card className="col-lg-3 offset-lg-1 batchCard">
+            <Card className="col-lg-3 offset-lg-1 batchCard" key={batch._id}>
             <Card.Header>Batch {x=x+1}</Card.Header>
             <Card.Body>
                 <Card.Title>{batch.branch}{" " + batch.year}</Card.Title>
@@ -117,7 +117,7 @@ function TeacherHome(props) {
 
         <div className="TeacherHome">
             <Row>
-              <Batches batches = {props.batches}/>
+              <Batches batches = {props.batches} loadBatch = {props.loadBatch}/>
             </Row>
         </div>
         </>

@@ -4,6 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import MeetingList from '../Tables/MeetingTable';
+import { useParams } from 'react-router-dom';
+import LoadingComponent from '../LoadingComponent';
 
 function AddStudentForm() {
     const onFinish = values => {
@@ -121,9 +123,50 @@ function AddMeetingModal(props) {
         </Modal.Footer>
       </Modal>
     );
-  }
+}
 
-function BatchComponent() {
+function LoadBatch({batch}){
+  if(batch.batch){
+    return(
+      <MeetingList meetings = {batch.batch.meetings}/>
+  );
+  }
+  else if(batch.errMess){
+    return(
+      <h2>{batch.errMess}</h2>
+    );
+  }
+  else{
+    return(
+      <LoadingComponent/>
+    );
+  }
+}
+
+function LoadStudents({students}){
+  if(students.students){
+    return(
+      <StudentList students = {students.students}/>
+  );
+  }
+  else if(students.errMess){
+    return(
+      <h2>{students.errMess}</h2>
+    );
+  }
+  else{
+    return(
+      <LoadingComponent/>
+    );
+  }
+}
+
+
+function BatchComponent(props) {
+    const { batchId } = useParams();
+    if(props.batch.batch == null && !props.batch.errMess && !props.batch.isLoading) {
+      props.loadBatch();  
+    }
     const [modalShow1, setModalShow1] = React.useState(false);
     const [modalShow2, setModalShow2] = React.useState(false);
 
@@ -140,7 +183,7 @@ function BatchComponent() {
                 />
             </div>
             <div className="studentListTable">
-                <StudentList/>
+                <LoadStudents students = {props.students}/>
             </div>
             <div  className="addButton">
                 <Button variant="success" onClick={() => setModalShow2(true)}>
@@ -153,7 +196,7 @@ function BatchComponent() {
                 />
             </div>
             <div className="studentListTable">
-                <MeetingList/>
+                <LoadBatch batch = {props.batch}/>
             </div>
         </div>
     )

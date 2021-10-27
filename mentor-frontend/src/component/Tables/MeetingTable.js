@@ -29,25 +29,13 @@ function createData(date, advice, attendence, options) {
 
 const options = <span><Button variant="danger">Delete</Button></span>;
 
-const rows = [
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options),
-  createData("2020-10-10", "DO Courses", 99, options)
-];
+function loadData(data){
+  var rows = [];
+  data.map((record) => {
+    rows.push(createData(record.date, record.advice, record.attendence, options));
+  });
+  return rows;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -171,7 +159,7 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
   const [page, setPage] = React.useState(0);
@@ -195,7 +183,8 @@ export default function EnhancedTable() {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
+  const rows = loadData(props.meetings);
+  console.log(rows);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;

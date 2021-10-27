@@ -5,7 +5,7 @@ import Signup from './Registration/signUp';
 import TeacherMain from './Teacher/MainComponent';
 import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
-import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage} from '../redux/ActionCreators';
+import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
 // import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
@@ -14,7 +14,9 @@ const mapStateToProps = state => {
         redirect: state.redirect,
         message: state.message,
         teacher: state.teacher,
-        batches: state.batches
+        batches: state.batches,
+        batch: state.batch,
+        students: state.students
     }
 }
 
@@ -24,12 +26,14 @@ const mapDispatchToProps = (dispatch) => ({
     logoutStudent: () => dispatch(logoutStudent()),
     logoutTeacher: () => dispatch(logoutTeacher()),
     loadTeacherProfile: () => dispatch(loadTeacherProfile()),
-    removeMessage: () => dispatch(removeMessage())
+    removeMessage: () => dispatch(removeMessage()),
+    loadBatch: () => dispatch(loadBatch()),
+    loadStudentBatch: () => dispatch(loadStudentBatch())
 })
 
 class Home extends Component{
     render(){
-        if(this.props.auth.isAuthenticated && this.props.auth.isTeacher && (!this.props.teacher.isLoading) && this.props.teacher.profile == null) {
+        if(this.props.auth.isAuthenticated && this.props.auth.isTeacher && (!this.props.teacher.isLoading) && this.props.teacher.profile == null && !this.props.teacher.errMess) {
             this.props.loadTeacherProfile();
         }
         const LoginPage = () => {
@@ -51,6 +55,10 @@ class Home extends Component{
                     logoutTeacher = {this.props.logoutTeacher}
                     removeMessage = {this.props.removeMessage}
                     batches = {this.props.batches}
+                    batch = {this.props.batch}
+                    loadBatch = {this.props.loadBatch}
+                    students = {this.props.students}
+                    loadStudentBatch = {this.props.loadStudentBatch}
                 />
             );
         }

@@ -19,36 +19,26 @@ import { visuallyHidden } from "@mui/utils";
 import {Button} from 'react-bootstrap';
 import {Link } from 'react-router-dom';
 
-function createData(name, enrollment, branch, year, options) {
+function createData(name, enrollment, branch, degree, options) {
   return {
     name,
     enrollment,
     branch,
-    year,
+    degree,
     options
   };
 }
 
 const options = <span><Button className="optionView"><Link to ="/student/123/profile">View</Link></Button><Button variant="danger">Delete</Button></span>;
 
-const rows = [
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options),
-  createData("Khushi Khandelwal", "EN19CS306016", "CSBS", "2019", options)
-];
+function loadData(data){
+  var rows = [];
+  data.map((record) => {
+    rows.push(createData(record.mentee.name, record.mentee.username, record.mentee.branch, record.mentee.degree, options));
+  });
+  console.log(rows);
+  return rows;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -100,10 +90,10 @@ const headCells = [
     label: "Branch"
   },
   {
-    id: "year",
+    id: "degree",
     numeric: true,
     disablePadding: false,
-    label: "Year"
+    label: "Degree"
   },
   {
     id: "options",
@@ -178,7 +168,7 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("Name");
   const [page, setPage] = React.useState(0);
@@ -202,7 +192,7 @@ export default function EnhancedTable() {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
+  const rows = loadData(props.students);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -249,7 +239,7 @@ export default function EnhancedTable() {
                       </TableCell>
                       <TableCell align="right">{row.enrollment}</TableCell>
                       <TableCell align="right">{row.branch}</TableCell>
-                      <TableCell align="right">{row.year}</TableCell>
+                      <TableCell align="right">{row.degree}</TableCell>
                       <TableCell align="right">{row.options}</TableCell>
                     </TableRow>
                   );

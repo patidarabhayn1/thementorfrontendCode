@@ -6,6 +6,8 @@ import Redirect from './ui';
 import Message from './message';
 import Teacher from './teacherProfile';
 import Batches from './batches';
+import Batch from './batch';
+import Students from './students';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -14,7 +16,9 @@ export const ConfigureStore = () => {
             auth: Auth,
             message: Message,
             teacher: Teacher,
-            batches: Batches
+            batches: Batches,
+            batch: Batch,
+            students: Students
         }),
         applyMiddleware(thunk, logger)
     );

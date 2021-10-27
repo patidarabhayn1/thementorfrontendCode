@@ -26,15 +26,23 @@ function Main(props) {
         <div className="app">
              <DisplayMessage message = {props.message} removeMessage = {props.removeMessage}/>
             <div className='navss'>
-                <Header teacher={props.teacher}/>
+                <Header teacher={props.teacher} logoutTeacher= {props.logoutTeacher}/>
             </div>
             <div className="containers">
-                <NavigationBar teacher={props.teacher}/>
+                <NavigationBar teacher={props.teacher} logoutTeacher= {props.logoutTeacher}/>
             </div>
             <div className="container mainSection">
                 <Switch>
                     <Route path="/teacher/home" component = {() => <TeacherHome message={props.message} batches = {props.batches}/>}/>
-                    <Route path="/teacher/batch/:batchId" component = {() => <BatchComponent message={props.message} />}/>
+                    <Route path="/teacher/batch/:batchId" component = { () => 
+                        <BatchComponent message={props.message} 
+                                        batch = {props.batch} 
+                                        loadBatch = {props.loadBatch}
+                                        students = {props.students}
+                                        loadStudentBatch = {props.loadStudentBatch}
+                        />
+                        }
+                    />
                     <Redirect to="/teacher/home" component = {() => <TeacherHome message={props.message} />}/>
                 </Switch>
             </div>

@@ -1,5 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../component/baseUrl';
+import { useParams } from 'react-router-dom';
+
 
 //TEACHER AUTHENTICATION
 export const teacherRequestLogin = (creds) => {
@@ -201,7 +203,6 @@ export const teacherProfileFailed = (errMess) => {
     }
 }
 export const teacherProfileSuccess = (user) => {
-    console.log("HELLO");
     return {
         type:ActionTypes.TEACHER_PROFILE_SUCCESS,
         payload: user
@@ -257,7 +258,6 @@ export const batchesFailed = (errMess) => {
         payload: errMess
     }
 }
-
 export const loadBatches = () => (dispatch) => {
     dispatch(batchesLoading());
     const bearer = 'Bearer ' + localStorage.getItem('token');
@@ -287,4 +287,102 @@ export const loadBatches = () => (dispatch) => {
     .then(response => response.json())
     .then(response => dispatch(batchesSuccess(response)))
     .catch(error => dispatch(batchesFailed(error)))
+}
+
+export const batchLoading = () => {
+    return{
+        type: ActionTypes.BATCH_LOADING
+    }
+}
+export const batchSuccess = (batch) => {
+    return{
+        type: ActionTypes.BATCH_SUCCESS,
+        payload: batch
+    }
+}
+export const batchFailed = (errMess) => {
+    return{
+        type: ActionTypes.BATCH_FAILED,
+        payload: errMess
+    }
+}
+export const loadBatch = () => (dispatch) => {
+    const { batchId } = useParams();
+    dispatch(batchLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'mentoring/' + batchId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(batchSuccess(response)))
+    .then(() => dispatch(loadStudentBatch(batchId)))
+    .catch(error => dispatch(batchFailed(error)))
+}
+
+export const batchStudentLoading = () => {
+    return{
+        type: ActionTypes.STUDENT_IN_BATCH_LOADING
+    }
+}
+export const batchStudentSuccess = (students) => {
+    return{
+        type: ActionTypes.STUDENT_IN_BATCH_SUCCESS,
+        payload: students
+    }
+}
+export const batchStudentFailed = (errMess) => {
+    return{
+        type: ActionTypes.STUDENT_IN_BATCH_FAILED,
+        payload: errMess
+    }
+}
+export const loadStudentBatch = (batchId) => (dispatch) => {
+    dispatch(batchStudentLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'mentoring/' + batchId +'/students', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(batchStudentSuccess(response)))
+    .catch(error => dispatch(batchStudentFailed(error)))
 }
