@@ -58,10 +58,6 @@ function AddInternshipModal(props) {
       <Modal.Body>
         <AddInternshipForm addbatch = {props.addbatch}/>
       </Modal.Body>
-      {/* <Modal.Footer>
-        <Button onClick={props.onHide} variant="success">Save</Button>
-        <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer> */}
     </Modal>
   );
 }

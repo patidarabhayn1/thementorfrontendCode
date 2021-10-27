@@ -369,6 +369,7 @@ export const loadStudentBatch = (batchId) => (dispatch) => {
         credentials: 'same-origin'
     })
     .then(response => {
+        console.log(response);
         if (response.ok) {
             return response;
         }
@@ -475,5 +476,65 @@ export const deleteBatch = (batchId) => (dispatch) => {
     .then(response => response.json())
     .then(response => dispatch(addMessage("Batch Deleted Successfully")))
     .then(() => dispatch(loadBatches()))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const addStudent = (batchId, student) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring/' + batchId + '/students', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(student)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Student Added Successfully")))
+    .then(() => dispatch(loadStudentBatch(batchId)))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const deleteStudent = (batchId, studentId) => (dispatch) => {
+    console.log(batchId, studentId);
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring/' + batchId + '/students/' + studentId , {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Student Deleted Successfully")))
+    .then(() => dispatch(loadStudentBatch(batchId)))
     .catch(error => dispatch(addMessage(error)))
 }

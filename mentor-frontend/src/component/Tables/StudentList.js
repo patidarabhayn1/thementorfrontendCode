@@ -29,14 +29,13 @@ function createData(name, enrollment, branch, degree, options) {
   };
 }
 
-const options = <span><Button className="optionView"><Link to ="/student/123/profile">View</Link></Button><Button variant="danger">Delete</Button></span>;
+const options = (batchId, studentId, deleteStudent) => <span><Button className="optionView"><Link to ={"/student/" + studentId + "/profile"}>View</Link></Button><Button variant="danger" onClick={() => deleteStudent(batchId, studentId)}>Delete</Button></span>;
 
-function loadData(data){
+function loadData(data, deleteStudent){
   var rows = [];
   data.map((record) => {
-    rows.push(createData(record.mentee.name, record.mentee.username, record.mentee.branch, record.mentee.degree, options));
+    rows.push(createData(record.mentee.name, record.mentee.username, record.mentee.branch, record.mentee.degree, options(record.batch, record.mentee._id, deleteStudent)));
   });
-  console.log(rows);
   return rows;
 }
 
@@ -192,7 +191,7 @@ export default function EnhancedTable(props) {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  const rows = loadData(props.students);
+  const rows = loadData(props.students, props.deleteStudent);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;

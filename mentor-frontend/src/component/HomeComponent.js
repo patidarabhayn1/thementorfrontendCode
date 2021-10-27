@@ -6,7 +6,7 @@ import TeacherMain from './Teacher/MainComponent';
 import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
-import { addBatch, deleteBatch } from "../redux/ActionCreators";
+import { addBatch, deleteBatch, addStudent, deleteStudent } from "../redux/ActionCreators";
 
 const mapStateToProps = state => {
     return {
@@ -30,7 +30,9 @@ const mapDispatchToProps = (dispatch) => ({
     loadBatch: () => dispatch(loadBatch()),
     loadStudentBatch: () => dispatch(loadStudentBatch()),
     addBatch: (batch) => dispatch(addBatch(batch)),
-    deleteBatch: (batchId) => dispatch(deleteBatch(batchId))
+    deleteBatch: (batchId) => dispatch(deleteBatch(batchId)),
+    addStudent: (batchId, student) => dispatch(addStudent(batchId, student)),
+    deleteStudent: (batchId, student) => dispatch(deleteStudent(batchId, student))
 })
 
 class Home extends Component{
@@ -63,6 +65,8 @@ class Home extends Component{
                     loadStudentBatch = {this.props.loadStudentBatch}
                     addBatch = {this.props.addBatch}
                     deleteBatch = {this.props.deleteBatch}
+                    addStudent = {this.props.addStudent}
+                    deleteStudent = {this.props.deleteStudent}
                 />
             );
         }
