@@ -386,3 +386,94 @@ export const loadStudentBatch = (batchId) => (dispatch) => {
     .then(response => dispatch(batchStudentSuccess(response)))
     .catch(error => dispatch(batchStudentFailed(error)))
 }
+
+export const addBatch = (batch) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(batch)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Batch Created Successfully")))
+    .then(() => dispatch(loadBatches()))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const editBatch = (batchId, batch) => (dispatch) => {
+    console.log(batchId, batch);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring/' + batchId, {
+        method: 'PUT',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(batch)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Batch Updated Successfully")))
+    .then(() => dispatch(loadBatches()))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const deleteBatch = (batchId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring/' + batchId , {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Batch Deleted Successfully")))
+    .then(() => dispatch(loadBatches()))
+    .catch(error => dispatch(addMessage(error)))
+}

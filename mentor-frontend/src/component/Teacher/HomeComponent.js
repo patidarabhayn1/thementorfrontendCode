@@ -7,9 +7,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import LoadingComponent from'../LoadingComponent';
 
-function AddInternshipForm() {
-  const onFinish = values => {
-      console.log('Success:', values);
+function AddInternshipForm(props) {
+  const onFinish = e => {
+    e.preventDefault()
+    const formData = new FormData(e.target),
+          formDataObj = Object.fromEntries(formData.entries())
+    props.addbatch(formDataObj);
   };
 
   const onFinishFailed = errorInfo => {
@@ -17,23 +20,23 @@ function AddInternshipForm() {
   };
 
   return (
-          <Form
-              name="login-form"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-          >
+          <Form onSubmit={onFinish}>
             <Form.Group>
               <Form.Label>Branch</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control type="text" name="branch"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Year</Form.Label>
-              <Form.Control type="number"/>
+              <Form.Control type="number" name="year"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>From</Form.Label>
-              <Form.Control type="date" />
+              <Form.Control type="date" name="from"/>
+            </Form.Group>
+            <Form.Group>
+              <Button type="primary" htmlType="submit" className="login-form-button" style = {{marginTop: "10px"}}>
+                  Submit
+              </Button>
             </Form.Group>
           </Form>
   )
@@ -53,17 +56,17 @@ function AddInternshipModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddInternshipForm/>
+        <AddInternshipForm addbatch = {props.addbatch}/>
       </Modal.Body>
-      <Modal.Footer>
+      {/* <Modal.Footer>
         <Button onClick={props.onHide} variant="success">Save</Button>
         <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer>
+      </Modal.Footer> */}
     </Modal>
   );
 }
 
-function Batches({batches, loadBatch}){
+function Batches({batches, deleteBatch}){
   if(batches.errMess) {
     return(
       <h3>{batches.errMess}</h3>
@@ -89,7 +92,8 @@ function Batches({batches, loadBatch}){
                     Meetings Count: {batch.meetings.length}<br/>
                     Mentoring From: {batch.year}
                 </Card.Text>
-                <Button variant="primary"><Link to={"/teacher/batch/"+batch._id}>View Batch</Link></Button>
+                <Button variant="primary" style={{float: "left"}}><Link to={"/teacher/batch/"+batch._id}>View Batch</Link></Button>
+                <Button variant="danger" style={{float: "right"}} onClick= {() => deleteBatch(batch._id) }><span className="fa fa-trash fa-lg"></span></Button>
             </Card.Body>
           </Card>
           );
@@ -112,12 +116,13 @@ function TeacherHome(props) {
             <AddInternshipModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+                addbatch = {props.addBatch}
             />
         </div>
 
         <div className="TeacherHome">
             <Row>
-              <Batches batches = {props.batches} loadBatch = {props.loadBatch}/>
+              <Batches batches = {props.batches} deleteBatch= {props.deleteBatch}/>
             </Row>
         </div>
         </>
