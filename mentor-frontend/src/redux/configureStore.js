@@ -9,6 +9,7 @@ import Batches from './batches';
 import Batch from './batch';
 import Students from './students';
 import Student from './student';
+import Internship from './internshipCertificate';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -20,7 +21,8 @@ export const ConfigureStore = () => {
             batches: Batches,
             batch: Batch,
             students: Students,
-            student: Student
+            student: Student,
+            internship: Internship
         }),
         applyMiddleware(thunk, logger)
     );

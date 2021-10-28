@@ -643,3 +643,82 @@ export const loadStudentProfile = (studentId) => (dispatch) => {
     .then(response => dispatch(studentProfileSuccess(response)))
     .catch(error => dispatch(studentProfileFailed(error)))
 }
+
+export const internshipCertificateLoading = () => {
+    return {
+        type:ActionTypes.INTERNSHIP_CERTIFICATE_LOADING
+    }
+}
+export const internshipCertificateFailed = (errMess) => {
+    return {
+        type:ActionTypes.INTERNSHIP_CERTIFICATE_FAILED,
+        payload: errMess
+    }
+}
+export const internshipCertificateSuccess = (certificate) => {
+    return {
+        type:ActionTypes.INTERNSHIP_CERTIFICATE_SUCCESS,
+        payload: certificate
+    }
+}
+export const loadInternshipCertificate = (studentId, certificateId) => (dispatch) => {
+    dispatch(internshipCertificateLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'students/' + studentId + '/internships/' +certificateId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        console.log(response);
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(internshipCertificateSuccess(response)))
+    .catch(error => dispatch(internshipCertificateFailed(error)))
+}
+
+export const addInternship = (studentId, internship) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + "students/" + studentId + '/internship', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(internship)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Meeting Added Successfully")))
+    .then(() => dispatch(loadStudentProfile(studentId)))
+    .catch(error => dispatch(addMessage(error)))
+}

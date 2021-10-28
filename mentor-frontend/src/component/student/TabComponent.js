@@ -13,7 +13,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function AddInternshipForm() {
+function AddSemesterForm() {
   const onFinish = values => {
       console.log('Success:', values);
   };
@@ -60,7 +60,7 @@ function AddInternshipForm() {
   )
 }
 
-function AddInternshipModal(props) {
+function AddSemesterModal(props) {
   return (
     <Modal
       {...props}
@@ -74,7 +74,7 @@ function AddInternshipModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddInternshipForm/>
+        <AddSemesterForm/>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide} variant="success">Save</Button>
@@ -117,7 +117,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
@@ -148,7 +148,7 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Internship/>
+        <Internship student = {props.student}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Courses/>
@@ -159,7 +159,7 @@ export default function BasicTabs() {
                     Add Semester
                 </Button>
 
-                <AddInternshipModal
+                <AddSemesterModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                 />

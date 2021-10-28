@@ -5,8 +5,36 @@ import { Route, Redirect, Switch} from 'react-router-dom';
 import ProfileComponent from './ProfileComponent';
 import ResultComponent from './ResultComponent';
 import SubjectComponent from './SubjectComponent';
+import InternshipComponent from './InternshipComponent';
 
-function Main() {
+function Main(props) {
+    const StudentPrivateRoute = ({ component: Component, ...rest }) => (
+        <Route {...rest} render={(props) => (
+          this.props.auth.isAuthenticated && (!this.props.auth.isTeacher)
+            ? <Component {...props} />
+            : <Redirect to={{
+                pathname: '/login',
+                state: { from: props.location }
+              }} />
+        )} />
+    );
+
+    const ProfilePage = () => {
+        return(
+            <ProfileComponent
+                loadStudentProfile = {props.loadStudentProfile}
+                student = {props.student}
+            />
+        );
+    }
+    const InternshipPage = () => {
+        return(
+            <InternshipComponent
+                loadInternshipCertificate = {props.loadInternshipCertificate} 
+                internship = {props.internship}
+            />
+        );
+    }
     return (
         <div className="app">
             <div className='navss'>
@@ -17,8 +45,9 @@ function Main() {
             </div>
             <div className="container mainSection">
                 <Switch>
-                    <Route path="/student/:studentId/profile" component={ProfileComponent}/>
-                    <Route path="/student/home" component={ProfileComponent}/>
+                    <Route exact path="/student/:studentId" component={ProfilePage}/>
+                    <Route path="/student/:studentId/internships/:internshipId" component={InternshipPage}/>
+                    <StudentPrivateRoute path="/student/home" component={ProfileComponent}/>
                     <Route exact path="/student/:studentId/result/:resultId" component={ResultComponent}/>
                     <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
                     <Redirect to="/student/home"/>

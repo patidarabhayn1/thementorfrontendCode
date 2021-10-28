@@ -29,7 +29,7 @@ function createData(name, enrollment, branch, degree, options) {
   };
 }
 
-const options = (batchId, studentId, deleteStudent) => <span><Button className="optionView"><Link to ={"/student/" + studentId + "/profile"}>View</Link></Button><Button variant="danger" onClick={() => deleteStudent(batchId, studentId)}>Delete</Button></span>;
+const options = (batchId, studentId, deleteStudent) => <span><Button className="optionView"><Link to ={"/student/" + studentId}>View</Link></Button><Button variant="danger" onClick={() => deleteStudent(batchId, studentId)}>Delete</Button></span>;
 
 function loadData(data, deleteStudent){
   var rows = [];

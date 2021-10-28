@@ -19,6 +19,7 @@ import { visuallyHidden } from "@mui/utils";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Link }  from 'react-router-dom';
 
 function AddInternshipForm() {
     const onFinish = values => {
@@ -94,28 +95,15 @@ function createData(domain, company, from, to, certificate) {
   };
 }
 
-const viewButton = <span><button className="btn btn-success optionView">View</button><button className="btn btn-danger">Delete</button></span>;
+const options = (studentId, internshipId) => <span><Button className="optionView"><a target="_blank" href ={"/student/" + studentId + '/internships/' + internshipId}>View</a></Button><Button variant="danger">Delete</Button></span>;
 
-const rows = [
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton)
-];
+function loadData(data, studentId){
+  var rows = [];
+  data.map((record) => {
+    rows.push(createData(record.domain, record.companyName, record.from, record.to, options(studentId, record._id)));
+  });
+  return rows;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -245,7 +233,7 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("company");
@@ -270,7 +258,7 @@ export default function EnhancedTable() {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
+  const rows = loadData(props.student.profile.internships, props.student.profile._id);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;

@@ -6,7 +6,8 @@ import TeacherMain from './Teacher/MainComponent';
 import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
-import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile } from "../redux/ActionCreators";
+import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile, loadInternshipCertificate } from "../redux/ActionCreators";
+import { addInternship } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -16,7 +17,9 @@ const mapStateToProps = state => {
         teacher: state.teacher,
         batches: state.batches,
         batch: state.batch,
-        students: state.students
+        students: state.students,
+        student: state.student,
+        internship: state.internship
     }
 }
 
@@ -35,7 +38,9 @@ const mapDispatchToProps = (dispatch) => ({
     deleteStudent: (batchId, student) => dispatch(deleteStudent(batchId, student)),
     addMeeting: (batchId, meeting) => dispatch(addMeeting(batchId, meeting)),
     deleteMeeting: (batchId, meeting) => dispatch(deleteMeeting(batchId, meeting)),
-    loadStudentProfile: (studentId) => dispatch(loadStudentProfile(studentId))
+    loadStudentProfile: (studentId) => dispatch(loadStudentProfile(studentId)),
+    loadInternshipCertificate: (studentId, certificateId) => dispatch(loadInternshipCertificate(studentId, certificateId)),
+    addInternship: (studentId, internship) => dispatch(addInternship(studentId, internship))
 })
 
 class Home extends Component{
@@ -76,6 +81,20 @@ class Home extends Component{
             );
         }
 
+        const StudentPage = () => {
+            return(
+                <StudentMain 
+                    message={this.props.message} 
+                    removeMessage = {this.props.removeMessage}
+                    loadStudentProfile = {this.props.loadStudentProfile}
+                    student = {this.props.student}
+                    internship = {this.props.internship}
+                    loadInternshipCertificate = {this.props.loadInternshipCertificate}
+                    addInternship = {this.props.addInternship}
+                />
+            );
+        }
+
         const TeacherPrivateRoute = ({ component: Component, ...rest }) => (
             <Route {...rest} render={(props) => (
               this.props.auth.isAuthenticated && this.props.auth.isTeacher
@@ -98,7 +117,7 @@ class Home extends Component{
                     <Route path = "/login" component = {LoginPage}/>
                     <Route path = "/signup" component = {Signup}/>
                     <TeacherPrivateRoute path = "/teacher" component = {TeacherPage} />
-                    <Route path = "/student" component = {StudentMain}/>
+                    <Route path = "/student" component = {StudentPage}/>
                     <Redirect to="/login"/>
                 </Switch>
         );
