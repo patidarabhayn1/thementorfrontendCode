@@ -4,13 +4,12 @@ import '../../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
-import { Link, NavLink } from 'react-router-dom';
-import ScrollNumber from 'antd/lib/badge/ScrollNumber';
+import { Link } from 'react-router-dom';
 
-export default function studentSignIn() {
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
+export default function studentSignIn(props) {
+    function handleLogin(values) {
+        props.loginStudent({username: values.username, password: values.password});
+    }
 
     const onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);
@@ -20,7 +19,7 @@ export default function studentSignIn() {
             <Form
                 name="login-form"
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
+                onFinish={handleLogin}
                 onFinishFailed={onFinishFailed}
                 
             >

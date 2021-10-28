@@ -7,7 +7,7 @@ import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
 import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile, loadInternshipCertificate } from "../redux/ActionCreators";
-import { addInternship } from '../redux/ActionCreators';
+import { addInternship, loadLoggedStudent } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -40,13 +40,17 @@ const mapDispatchToProps = (dispatch) => ({
     deleteMeeting: (batchId, meeting) => dispatch(deleteMeeting(batchId, meeting)),
     loadStudentProfile: (studentId) => dispatch(loadStudentProfile(studentId)),
     loadInternshipCertificate: (studentId, certificateId) => dispatch(loadInternshipCertificate(studentId, certificateId)),
-    addInternship: (studentId, internship) => dispatch(addInternship(studentId, internship))
+    addInternship: (studentId, internship) => dispatch(addInternship(studentId, internship)),
+    loadLoggedStudent: () => dispatch(loadLoggedStudent())
 })
 
 class Home extends Component{
     render(){
         if(this.props.auth.isAuthenticated && this.props.auth.isTeacher && (!this.props.teacher.isLoading) && this.props.teacher.profile == null && !this.props.teacher.errMess) {
             this.props.loadTeacherProfile();
+        }
+        else if(this.props.auth.isAuthenticated && !this.props.auth.isTeacher && (!this.props.student.isLoading) && this.props.student.profile == null && !this.props.student.errMess) {
+            this.props.loadLoggedStudent();
         }
         const LoginPage = () => {
             return(
@@ -91,6 +95,8 @@ class Home extends Component{
                     internship = {this.props.internship}
                     loadInternshipCertificate = {this.props.loadInternshipCertificate}
                     addInternship = {this.props.addInternship}
+                    auth = {this.props.auth}
+                    loadLoggedStudent = {this.props.loadLoggedStudent}
                 />
             );
         }

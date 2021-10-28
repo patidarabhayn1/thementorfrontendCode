@@ -80,17 +80,20 @@ function LoadProfile({student}) {
 
 function Profiles(props) {
     var { studentId } = useParams();
-    if (!props.student.errMess && !props.student.isLoading) {
-        if(props.student.profile == null)
-            props.loadStudentProfile(studentId);
-        else if(props.student.profile._id != studentId)
-            props.loadStudentProfile(studentId);
+    if(props.auth.isTeacher){
+        if (!props.student.errMess && !props.student.isLoading) {
+            if(props.student.profile == null)
+                props.loadStudentProfile(studentId);
+            else if(props.student.profile._id != studentId)
+                props.loadStudentProfile(studentId);
+        }
     }
-    const [click, setClick] = useState(false);
-    // const handleClick = () => setClick(!click);
-
-    const [profileClick, setprofileClick] = React.useState(false);
-    // const handleProfileClick = () => setprofileClick(!profileClick);
+    else {
+        if (!props.student.errMess && !props.student.isLoading) {
+            if(props.student.profile == null)
+                props.loadLoggedStudent();
+        }
+    }
     return (
             <LoadProfile student = {props.student} />
     );

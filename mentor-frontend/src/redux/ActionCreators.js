@@ -108,7 +108,7 @@ export const loginStudent = (creds) => (dispatch) => {
     // We dispatch studentRequestLogin to kickoff the call to the API
     dispatch(studentRequestLogin(creds))
 
-    return fetch(baseUrl + 'student/login', {
+    return fetch(baseUrl + 'students/login', {
         method: 'POST',
         headers: { 
             'Content-Type':'application/json' 
@@ -137,6 +137,8 @@ export const loginStudent = (creds) => (dispatch) => {
             // Dispatch the success action
             // dispatch(fetchFavorites());
             dispatch(studentReceiveLogin(response));
+            dispatch(addMessage("LOGIN SUCCECCFUL"));
+            dispatch(redirect("/student/home"));
         }
         else {
             var error = new Error('Error ' + response.status);
@@ -618,6 +620,37 @@ export const loadStudentProfile = (studentId) => (dispatch) => {
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
     return fetch(baseUrl + 'students/' + studentId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(studentProfileSuccess(response)))
+    .catch(error => dispatch(studentProfileFailed(error)))
+}
+
+export const loadLoggedStudent = () => (dispatch) => {
+    dispatch(studentProfileLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'students/profile', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -50,12 +50,10 @@ const Register = (props) => {
                             <FacultySignIn 
                                 auth= {props.auth} 
                                 loginTeacher = {props.loginTeacher} 
-                                logoutTeacher = {props.logoutTeacher}
                             /> 
                             : <StudentSignIn 
                                 auth= {props.auth} 
                                 loginStudent = {props.loginStudent} 
-                                logoutStudent = {props.logoutStudent}
                             />
                         }
                     </div>

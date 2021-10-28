@@ -6,6 +6,22 @@ import ProfileComponent from './ProfileComponent';
 import ResultComponent from './ResultComponent';
 import SubjectComponent from './SubjectComponent';
 import InternshipComponent from './InternshipComponent';
+import MessageComponent from '../Registration/messageComponent';
+
+function DisplayMessage({message, removeMessage}) {
+    if(message.showMessage){
+        const mess = message.showMessage;
+        // removeMessage();
+        return(
+            <MessageComponent message={mess} removeMessage={removeMessage}/>
+        );
+    }
+    else {
+        return(
+            <div></div>
+        );
+    }
+}
 
 function Main(props) {
     const StudentPrivateRoute = ({ component: Component, ...rest }) => (
@@ -24,6 +40,8 @@ function Main(props) {
             <ProfileComponent
                 loadStudentProfile = {props.loadStudentProfile}
                 student = {props.student}
+                auth = {props.auth}
+                loadLoggedStudent = {props.loadLoggedStudent}
             />
         );
     }
@@ -37,6 +55,7 @@ function Main(props) {
     }
     return (
         <div className="app">
+             <DisplayMessage message = {props.message} removeMessage = {props.removeMessage}/>
             <div className='navss'>
                 <Header />
             </div>
@@ -47,7 +66,7 @@ function Main(props) {
                 <Switch>
                     <Route exact path="/student/:studentId" component={ProfilePage}/>
                     <Route path="/student/:studentId/internships/:internshipId" component={InternshipPage}/>
-                    <StudentPrivateRoute path="/student/home" component={ProfileComponent}/>
+                    <StudentPrivateRoute path="/student/home" component={ProfilePage}/>
                     <Route exact path="/student/:studentId/result/:resultId" component={ResultComponent}/>
                     <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
                     <Redirect to="/student/home"/>

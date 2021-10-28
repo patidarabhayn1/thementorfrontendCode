@@ -4,21 +4,12 @@ import '../../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
-import { Link, NavLink } from 'react-router-dom';
-import Message from './messageComponent';
+import { Link } from 'react-router-dom';
 
 export default function facultySignIn(props) {
     function handleLogin(values) {
         props.loginTeacher({username: values.username, password: values.password});
     }
-
-    function handleLogout() {
-        props.logoutTeacher();
-    }
-
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
 
     const onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);
