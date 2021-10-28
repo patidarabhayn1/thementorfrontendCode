@@ -6,7 +6,7 @@ import TeacherMain from './Teacher/MainComponent';
 import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
-import { addBatch, deleteBatch, addStudent, deleteStudent } from "../redux/ActionCreators";
+import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile } from "../redux/ActionCreators";
 
 const mapStateToProps = state => {
     return {
@@ -27,12 +27,15 @@ const mapDispatchToProps = (dispatch) => ({
     logoutTeacher: () => dispatch(logoutTeacher()),
     loadTeacherProfile: () => dispatch(loadTeacherProfile()),
     removeMessage: () => dispatch(removeMessage()),
-    loadBatch: () => dispatch(loadBatch()),
+    loadBatch: (batchId) => dispatch(loadBatch(batchId)),
     loadStudentBatch: () => dispatch(loadStudentBatch()),
     addBatch: (batch) => dispatch(addBatch(batch)),
     deleteBatch: (batchId) => dispatch(deleteBatch(batchId)),
     addStudent: (batchId, student) => dispatch(addStudent(batchId, student)),
-    deleteStudent: (batchId, student) => dispatch(deleteStudent(batchId, student))
+    deleteStudent: (batchId, student) => dispatch(deleteStudent(batchId, student)),
+    addMeeting: (batchId, meeting) => dispatch(addMeeting(batchId, meeting)),
+    deleteMeeting: (batchId, meeting) => dispatch(deleteMeeting(batchId, meeting)),
+    loadStudentProfile: (studentId) => dispatch(loadStudentProfile(studentId))
 })
 
 class Home extends Component{
@@ -67,6 +70,8 @@ class Home extends Component{
                     deleteBatch = {this.props.deleteBatch}
                     addStudent = {this.props.addStudent}
                     deleteStudent = {this.props.deleteStudent}
+                    addMeeting = {this.props.addMeeting}
+                    deleteMeeting = {this.props.deleteMeeting}
                 />
             );
         }

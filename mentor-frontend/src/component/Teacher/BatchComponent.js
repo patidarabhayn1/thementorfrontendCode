@@ -61,9 +61,13 @@ function AddStudentModal(props) {
   );
 }
 
-function AddMeetingForm() {
-  const onFinish = values => {
-    console.log('Success:', values);
+function AddMeetingForm(props) {
+  const onFinish = e => {
+    e.preventDefault()
+    console.log(props.batchId);
+    const formData = new FormData(e.target),
+          formDataObj = Object.fromEntries(formData.entries())
+    props.addMeeting(props.batchId, formDataObj);
   };
 
   const onFinishFailed = errorInfo => {
@@ -71,20 +75,15 @@ function AddMeetingForm() {
   };
 
   return (
-    <Form
-      name="student-add-form"
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
+    <Form onSubmit={onFinish}>
       <Form.Group>
         <Form.Label>Date</Form.Label>
-        <Form.Control type="date" placeholder="ex. dd-mm-yy" />
+        <Form.Control type="date" name="date" placeholder="ex. dd-mm-yy" />
       </Form.Group>
 
       <Form.Group>
         <Form.Label>Advice</Form.Label>
-        <Form.Control type="text" placeholder="Do Some Internships" />
+        <Form.Control type="text" name="advice" placeholder="Do Some Internships" />
         <Form.Text className="text-muted">
           What advice you have given to mentees
         </Form.Text>
@@ -92,10 +91,15 @@ function AddMeetingForm() {
 
       <Form.Group>
         <Form.Label>Attendece</Form.Label>
-        <Form.Control type="number" placeholder="ex. 88.33%" />
+        <Form.Control type="number" name="attendence" placeholder="ex. 88.33%" />
         <Form.Text className="text-muted">
           (in %)
         </Form.Text>
+      </Form.Group>
+      <Form.Group>
+        <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+          Submit
+        </Button>
       </Form.Group>
     </Form>
   )
@@ -115,20 +119,16 @@ function AddMeetingModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddMeetingForm />
+        <AddMeetingForm addMeeting={props.addMeeting} batchId = {props.batchId}/>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide} variant="success">Save</Button>
-        <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer>
     </Modal>
   );
 }
 
-function LoadBatch({ batch }) {
+function LoadBatch({ batch, deleteMeeting, batchId }) {
   if (batch.batch) {
     return (
-      <MeetingList meetings={batch.batch.meetings} />
+      <MeetingList meetings={batch.batch.meetings} deleteMeeting = {deleteMeeting} batchId = {batchId}/>
     );
   }
   else if (batch.errMess) {
@@ -163,10 +163,14 @@ function LoadStudents({ students, deleteStudent }) {
 
 
 function BatchComponent(props) {
-  const { batchId } = useParams();
-  if (props.batch.batch == null && !props.batch.errMess && !props.batch.isLoading) {
-    props.loadBatch();
+  var {batchId } = useParams();
+  if (!props.batch.errMess && !props.batch.isLoading) {
+    if(props.batch.batch == null)
+      props.loadBatch(batchId);
+    else if(props.batch.batch._id != batchId)
+      props.loadBatch(batchId);
   }
+  // const batchId = props.batch.batch._id;
   const [modalShow1, setModalShow1] = React.useState(false);
   const [modalShow2, setModalShow2] = React.useState(false);
 
@@ -181,7 +185,6 @@ function BatchComponent(props) {
           show={modalShow1}
           onHide={() => setModalShow1(false)}
           addStudent={props.addStudent}
-          deleteStudent={props.deleteStudent}
           batchId = {batchId}
         />
       </div>
@@ -196,10 +199,12 @@ function BatchComponent(props) {
         <AddMeetingModal
           show={modalShow2}
           onHide={() => setModalShow2(false)}
+          addMeeting={props.addMeeting}
+          batchId = {batchId}
         />
       </div>
       <div className="studentListTable">
-        <LoadBatch batch={props.batch} />
+        <LoadBatch batch={props.batch} deleteMeeting = {props.deleteMeeting} batchId = {batchId}/>
       </div>
     </div>
   )

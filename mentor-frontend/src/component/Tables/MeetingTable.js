@@ -27,12 +27,12 @@ function createData(date, advice, attendence, options) {
   };
 }
 
-const options = <span><Button variant="danger">Delete</Button></span>;
+const options = (batchId, meetingId, deleteMeeting) => <span><Button variant="danger" onClick={() => deleteMeeting(batchId, meetingId)}>Delete</Button></span>;
 
-function loadData(data){
+function loadData(data, deleteMeeting, batchId){
   var rows = [];
   data.map((record) => {
-    rows.push(createData(record.date, record.advice, record.attendence, options));
+    rows.push(createData(record.date, record.advice, record.attendence, options(batchId, record._id, deleteMeeting)));
   });
   return rows;
 }
@@ -183,7 +183,7 @@ export default function EnhancedTable(props) {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  const rows = loadData(props.meetings);
+  const rows = loadData(props.meetings, props.deleteMeeting, props.batchId);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;

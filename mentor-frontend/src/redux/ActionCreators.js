@@ -306,8 +306,7 @@ export const batchFailed = (errMess) => {
         payload: errMess
     }
 }
-export const loadBatch = () => (dispatch) => {
-    const { batchId } = useParams();
+export const loadBatch = (batchId) => (dispatch) => {
     dispatch(batchLoading());
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
@@ -316,8 +315,7 @@ export const loadBatch = () => (dispatch) => {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': bearer
-        },
-        credentials: 'same-origin'
+        }
     })
     .then(response => {
         if (response.ok) {
@@ -537,4 +535,111 @@ export const deleteStudent = (batchId, studentId) => (dispatch) => {
     .then(response => dispatch(addMessage("Student Deleted Successfully")))
     .then(() => dispatch(loadStudentBatch(batchId)))
     .catch(error => dispatch(addMessage(error)))
+}
+
+export const addMeeting = (batchId, meeting) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring/' + batchId + '/meetings', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(meeting)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Meeting Added Successfully")))
+    .then(() => dispatch(loadBatch(batchId)))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const deleteMeeting = (batchId, meetingId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'mentoring/' + batchId + '/meetings/' + meetingId , {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Meeting Deleted Successfully")))
+    .then(() => dispatch(loadBatch(batchId)))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const studentProfileLoading = () => {
+    return {
+        type:ActionTypes.STUDENT_PROFILE_LOADING
+    }
+}
+export const studentProfileFailed = (errMess) => {
+    return {
+        type:ActionTypes.STUDENT_PROFILE_FAILED,
+        payload: errMess
+    }
+}
+export const studentProfileSuccess = (user) => {
+    return {
+        type:ActionTypes.STUDENT_PROFILE_SUCCESS,
+        payload: user
+    }
+}
+export const loadStudentProfile = (studentId) => (dispatch) => {
+    dispatch(studentProfileLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'students/' + studentId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(studentProfileSuccess(response)))
+    .catch(error => dispatch(studentProfileFailed(error)))
 }

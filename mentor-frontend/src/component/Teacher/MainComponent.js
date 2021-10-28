@@ -49,6 +49,8 @@ function Main(props) {
                                         loadStudentBatch = {props.loadStudentBatch}
                                         addStudent = {props.addStudent}
                                         deleteStudent = {props.deleteStudent}
+                                        addMeeting = {props.addMeeting}
+                                        deleteMeeting = {props.deleteMeeting}
                         />
                         }
                     />

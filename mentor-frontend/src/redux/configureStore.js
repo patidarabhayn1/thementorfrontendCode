@@ -8,6 +8,7 @@ import Teacher from './teacherProfile';
 import Batches from './batches';
 import Batch from './batch';
 import Students from './students';
+import Student from './student';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -18,7 +19,8 @@ export const ConfigureStore = () => {
             teacher: Teacher,
             batches: Batches,
             batch: Batch,
-            students: Students
+            students: Students,
+            student: Student
         }),
         applyMiddleware(thunk, logger)
     );
