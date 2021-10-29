@@ -19,67 +19,66 @@ import { visuallyHidden } from "@mui/utils";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link }  from 'react-router-dom';
-import {baseUrl } from '../baseUrl';
+import { Link } from 'react-router-dom';
+import { baseUrl } from '../baseUrl';
 
 function AddInternshipForm(props) {
   const onFinish = e => {
     e.preventDefault();
     const formData = new FormData(e.target);
-          // formDataObj = Object.fromEntries(formData.entries());
     props.addInternship(formData);
   };
 
-    return (
-          <Form onSubmit={onFinish}>
-              <Form.Group>
-                <Form.Label>Domain</Form.Label>
-                <Form.Control name="domain" type="text" placeholder="ex. Web Dev" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Company Name</Form.Label>
-                <Form.Control name="companyName" type="text" placeholder="ex. Being Gourav" />
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>From</Form.Label>
-                <Form.Control name="from" type="date"/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>To</Form.Label>
-                <Form.Control name="to" type="date"/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Certificate</Form.Label>
-                <Form.Control name="certificate" type="file" accept="application/pdf"/>
-              </Form.Group>
-              <Form.Group>
-                <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
-                  Submit
-                </Button>
-              </Form.Group>
-            </Form>
-    )
+  return (
+    <Form onSubmit={onFinish}>
+      <Form.Group>
+        <Form.Label>Domain</Form.Label>
+        <Form.Control name="domain" type="text" placeholder="ex. Web Dev" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Company Name</Form.Label>
+        <Form.Control name="companyName" type="text" placeholder="ex. Being Gourav" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>From</Form.Label>
+        <Form.Control name="from" type="date" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>To</Form.Label>
+        <Form.Control name="to" type="date" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Certificate</Form.Label>
+        <Form.Control name="certificate" type="file" accept="application/pdf" />
+      </Form.Group>
+      <Form.Group>
+        <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+          Submit
+        </Button>
+      </Form.Group>
+    </Form>
+  )
 }
 
 function AddInternshipModal(props) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Add Internship Record
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <AddInternshipForm addInternship = {props.addInternship}/>
-        </Modal.Body>
-      </Modal>
-    );
-  }
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add Internship Record
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddInternshipForm addInternship={props.addInternship} />
+      </Modal.Body>
+    </Modal>
+  );
+}
 
 function createData(domain, company, from, to, certificate) {
   return {
@@ -91,9 +90,9 @@ function createData(domain, company, from, to, certificate) {
   };
 }
 
-const options = (studentId, internshipId, deleteInternship) => <span><Button className="optionView"><a target="_blank" href ={ baseUrl + "students/" + studentId + '/internships/' + internshipId}>View</a></Button><Button variant="danger" onClick = {() => deleteInternship(internshipId)}>Delete</Button></span>;
+const options = (studentId, internshipId, deleteInternship) => <span><Button className="optionView"><a target="_blank" href={baseUrl + "students/" + studentId + '/internships/' + internshipId}>View</a></Button><Button variant="danger" onClick={() => deleteInternship(internshipId)}>Delete</Button></span>;
 
-function loadData(data, studentId, deleteInternship){
+function loadData(data, studentId, deleteInternship) {
   var rows = [];
   data.map((record) => {
     rows.push(createData(record.domain, record.companyName, record.from, record.to, options(studentId, record._id, deleteInternship)));
@@ -263,17 +262,17 @@ export default function EnhancedTable(props) {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
-            <div  className="addButton">
-                <Button variant="success" onClick={() => setModalShow(true)}>
-                    Add Record
-                </Button>
+        <div className="addButton">
+          <Button variant="success" onClick={() => setModalShow(true)}>
+            Add Record
+          </Button>
 
-                <AddInternshipModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                    addInternship = {props.addInternship}
-                />
-            </div>
+          <AddInternshipModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            addInternship={props.addInternship}
+          />
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

@@ -148,10 +148,18 @@ export default function BasicTabs(props) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Internship student = {props.student} addInternship = {props.addInternship} deleteInternship = {props.deleteInternship}/>
+        <Internship 
+            student = {props.student} 
+            addInternship = {props.addInternship} 
+            deleteInternship = {props.deleteInternship}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Courses/>
+        <Courses 
+          student = {props.student} 
+          addCourse = {props.addCourse}
+          deleteCourse = {props.deleteCourse}
+        />
       </TabPanel>
       <TabPanel value={value} index={2}>
             <div  className="addButton">

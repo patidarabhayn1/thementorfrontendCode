@@ -44,6 +44,8 @@ function Main(props) {
                 loadLoggedStudent = {props.loadLoggedStudent}
                 addInternship = {props.addInternship}
                 deleteInternship = {props.deleteInternship}
+                addCourse = {props.addCourse}
+                deleteCourse = {props.deleteCourse}
             />
         );
     }

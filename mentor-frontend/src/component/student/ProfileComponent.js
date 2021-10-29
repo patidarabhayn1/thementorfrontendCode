@@ -7,15 +7,15 @@ import { useParams } from'react-router';
 import LoadingComponent from '../LoadingComponent';
 import demoImage from '../../images/demo-user.jpg';
 
-function LoadProfile({student, addInternship, deleteInternship}) {
-   if(student.profile != null){
+function LoadProfile(props) {
+   if(props.student.profile != null){
     return (
         <div className="contents">
             <div className="profiles">
                 <div className="profile1">
                     <ProfileUi
                         imgUrl= {demoImage}
-                        name={student.profile.name}
+                        name={props.student.profile.name}
                     />
                 </div>
                 <div className="profile2">
@@ -27,30 +27,30 @@ function LoadProfile({student, addInternship, deleteInternship}) {
                                 <div class="row-1 infotable">
                                     <div className="info">
                                         <p class="row-p">Enrollment Number</p>
-                                        <p><strong>{student.profile.username}</strong></p>
+                                        <p><strong>{props.student.profile.username}</strong></p>
                                     </div>
                                     <div className="info">
                                         <p class="row-p">Admission Date</p>
-                                        <p><strong>{student.profile.admissionDate}</strong></p>
+                                        <p><strong>{props.student.profile.admissionDate}</strong></p>
                                     </div>
                                     <div className="info">
                                         <p class="row-p">Phone Number</p>
-                                        <p><strong>{student.profile.phoneNumber}</strong></p>
+                                        <p><strong>{props.student.profile.phoneNumber}</strong></p>
                                     </div>
                                 </div>
                                 <div class="infotable"><hr /></div>
                                 <div class="row-1 infotable">
                                     <div className="info">
                                         <p class="row-p">Email</p>
-                                        <p><strong>{student.profile.email}</strong></p>
+                                        <p><strong>{props.student.profile.email}</strong></p>
                                     </div>
                                     <div className="info">
                                         <p class="row-p" >Degree</p>
-                                        <p><strong>{student.profile.degree}</strong></p>
+                                        <p><strong>{props.student.profile.degree}</strong></p>
                                     </div>
                                     <div className="info">
                                         <p class="row-p">Branch</p>
-                                        <p><strong>{student.profile.branch}</strong></p>
+                                        <p><strong>{props.student.profile.branch}</strong></p>
 
                                     </div>
                                 </div>
@@ -61,14 +61,19 @@ function LoadProfile({student, addInternship, deleteInternship}) {
                 </div>
             </div>
             <div className="content1">
-                <TabSection student = {student} addInternship = {addInternship} deleteInternship = {deleteInternship}/>
+                <TabSection student = {props.student} 
+                            addInternship = {props.addInternship} 
+                            deleteInternship = {props.deleteInternship}
+                            addCourse = {props.addCourse}
+                            deleteCourse = {props.deleteCourse}
+                />
             </div>
         </div>
     );
    } 
-   else if(student.errMess){
+   else if(props.student.errMess){
        return(
-           <h2>{student.errMess}</h2>
+           <h2>{props.student.errMess}</h2>
        );
    }
    else {
@@ -95,7 +100,13 @@ function Profiles(props) {
         }
     }
     return (
-            <LoadProfile student = {props.student} addInternship = {props.addInternship} deleteInternship = {props.deleteInternship}/>
+            <LoadProfile 
+                student = {props.student} 
+                addInternship = {props.addInternship} 
+                deleteInternship = {props.deleteInternship}
+                addCourse = {props.addCourse}
+                deleteCourse = {props.deleteCourse}
+            />
     );
 }
 

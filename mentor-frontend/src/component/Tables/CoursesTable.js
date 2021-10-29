@@ -19,44 +19,44 @@ import { visuallyHidden } from "@mui/utils";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Link } from 'react-router-dom';
+import { baseUrl } from '../baseUrl';
 
-function AddInternshipForm() {
-  const onFinish = values => {
-      console.log('Success:', values);
-  };
-
-  const onFinishFailed = errorInfo => {
-      console.log('Failed:', errorInfo);
+function AddInternshipForm(props) {
+  const onFinish = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    props.addCourse(formData);
   };
 
   return (
-          <Form
-              name="login-form"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-          >
-            <Form.Group>
-              <Form.Label>Domain</Form.Label>
-              <Form.Control type="text" placeholder="ex. Web Dev" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Platform</Form.Label>
-              <Form.Control type="text" placeholder="ex. Coursera" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>From</Form.Label>
-              <Form.Control type="date"/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>To</Form.Label>
-              <Form.Control type="date"/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Certificate</Form.Label>
-              <Form.Control type="file" accept="application/pdf"/>
-            </Form.Group>
-          </Form>
+    <Form onSubmit={onFinish}>
+      <Form.Group>
+        <Form.Label>Domain</Form.Label>
+        <Form.Control name="domain" type="text" placeholder="ex. Web Dev" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Platform</Form.Label>
+        <Form.Control name="platform" type="text" placeholder="ex. Coursera" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>From</Form.Label>
+        <Form.Control name="from" type="date" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>To</Form.Label>
+        <Form.Control name="to" type="date" />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Certificate</Form.Label>
+        <Form.Control name="certificate" type="file" accept="application/pdf" />
+      </Form.Group>
+      <Form.Group>
+        <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+          Submit
+        </Button>
+      </Form.Group>
+    </Form>
   )
 }
 
@@ -74,12 +74,8 @@ function AddInternshipModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddInternshipForm/>
+        <AddInternshipForm addCourse = {props.addCourse}/>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide} variant="success">Save</Button>
-        <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer>
     </Modal>
   );
 }
@@ -94,28 +90,15 @@ function createData(domain, platform, from, to, certificate) {
   };
 }
 
-const viewButton = <span><button className="btn btn-success optionView">View</button><button className="btn btn-danger">Delete</button></span>;
+const options = (studentId, courseId, deleteCourse) => <span><Button className="optionView"><a target="_blank" href={baseUrl + "students/" + studentId + '/courses/' + courseId}>View</a></Button><Button variant="danger" onClick={() => deleteCourse(courseId)}>Delete</Button></span>;
 
-const rows = [
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton),
-  createData("Web Dev", "Being Gourav", "2020-10-10", "2020-11-10", viewButton)
-];
+function loadData(data, studentId, deleteCourse) {
+  var rows = [];
+  data.map((record) => {
+    rows.push(createData(record.domain, record.platform, record.from, record.to, options(studentId, record._id, deleteCourse)));
+  });
+  return rows;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -245,7 +228,7 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("platform");
@@ -271,6 +254,7 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
+  const rows = loadData(props.student.profile.courses, props.student.profile._id, props.deleteCourse);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -279,16 +263,17 @@ export default function EnhancedTable() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
-            <div  className="addButton">
-                <Button variant="success" onClick={() => setModalShow(true)}>
-                    Add Record
-                </Button>
+        <div className="addButton">
+          <Button variant="success" onClick={() => setModalShow(true)}>
+            Add Record
+          </Button>
 
-                <AddInternshipModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                />
-            </div>
+          <AddInternshipModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            addCourse ={props.addCourse}
+          />
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

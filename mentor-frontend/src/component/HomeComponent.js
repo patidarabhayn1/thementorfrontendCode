@@ -7,7 +7,7 @@ import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
 import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile, loadInternshipCertificate } from "../redux/ActionCreators";
-import { addInternship, loadLoggedStudent, deleteInternship } from '../redux/ActionCreators';
+import { addInternship, loadLoggedStudent, deleteInternship, addCourse, deleteCourse } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -42,6 +42,8 @@ const mapDispatchToProps = (dispatch) => ({
     loadInternshipCertificate: (studentId, certificateId) => dispatch(loadInternshipCertificate(studentId, certificateId)),
     addInternship: (studentId, internship) => dispatch(addInternship(studentId, internship)),
     deleteInternship: (internshipId) => dispatch(deleteInternship(internshipId)),
+    addCourse: (studentId, course) => dispatch(addCourse(studentId, course)),
+    deleteCourse: (courseId) => dispatch(deleteCourse(courseId)),
     loadLoggedStudent: () => dispatch(loadLoggedStudent())
 })
 
@@ -97,6 +99,8 @@ class Home extends Component{
                     loadInternshipCertificate = {this.props.loadInternshipCertificate}
                     addInternship = {this.props.addInternship}
                     deleteInternship = {this.props.deleteInternship}
+                    addCourse = {this.props.addCourse}
+                    deleteCourse = {this.props.deleteCourse}
                     auth = {this.props.auth}
                     loadLoggedStudent = {this.props.loadLoggedStudent}
                     logoutStudent = {this.props.logoutStudent}

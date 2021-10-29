@@ -728,7 +728,6 @@ export const loadInternshipCertificate = (studentId, certificateId) => (dispatch
 }
 
 export const addInternship = (internship) => (dispatch) => {
-    console.log(internship);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return axios.post(baseUrl + "students/internships", internship, {
             headers: { 
@@ -776,6 +775,58 @@ export const deleteInternship = (internshipId) => (dispatch) => {
     })
     .then(response => response.json())
     .then(response => dispatch(addMessage("Internship Deleted Successfully")))
+    .then(() => dispatch(loadLoggedStudent()))
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const addCourse = (course) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return axios.post(baseUrl + "students/courses", course, {
+            headers: { 
+                'Content-Type':'multipart/form-data',
+                'Authorization': bearer
+            }
+        })
+    .then(response => {
+        console.log(response);
+        if (response.status ==200) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    })
+    .then((response) => dispatch(addMessage("Course Added Successfully")))
+    .then((response) => dispatch(loadLoggedStudent()))
+    .catch(error => dispatch(addMessage(error)))
+}
+export const deleteCourse = (courseId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + "students/courses/" + courseId, {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addMessage("Course Deleted Successfully")))
     .then(() => dispatch(loadLoggedStudent()))
     .catch(error => dispatch(addMessage(error)))
 }
