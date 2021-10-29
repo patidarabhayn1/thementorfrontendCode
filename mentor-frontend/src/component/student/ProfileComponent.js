@@ -7,7 +7,7 @@ import { useParams } from'react-router';
 import LoadingComponent from '../LoadingComponent';
 import demoImage from '../../images/demo-user.jpg';
 
-function LoadProfile({student}) {
+function LoadProfile({student, addInternship, deleteInternship}) {
    if(student.profile != null){
     return (
         <div className="contents">
@@ -61,7 +61,7 @@ function LoadProfile({student}) {
                 </div>
             </div>
             <div className="content1">
-                <TabSection student = {student} />
+                <TabSection student = {student} addInternship = {addInternship} deleteInternship = {deleteInternship}/>
             </div>
         </div>
     );
@@ -95,7 +95,7 @@ function Profiles(props) {
         }
     }
     return (
-            <LoadProfile student = {props.student} />
+            <LoadProfile student = {props.student} addInternship = {props.addInternship} deleteInternship = {props.deleteInternship}/>
     );
 }
 

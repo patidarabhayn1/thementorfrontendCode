@@ -20,42 +20,42 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link }  from 'react-router-dom';
+import {baseUrl } from '../baseUrl';
 
-function AddInternshipForm() {
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-    };
+function AddInternshipForm(props) {
+  const onFinish = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+          // formDataObj = Object.fromEntries(formData.entries());
+    props.addInternship(formData);
+  };
 
     return (
-            <Form
-                name="login-form"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-            >
+          <Form onSubmit={onFinish}>
               <Form.Group>
                 <Form.Label>Domain</Form.Label>
-                <Form.Control type="text" placeholder="ex. Web Dev" />
+                <Form.Control name="domain" type="text" placeholder="ex. Web Dev" />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Company Name</Form.Label>
-                <Form.Control type="text" placeholder="ex. Being Gourav" />
+                <Form.Control name="companyName" type="text" placeholder="ex. Being Gourav" />
               </Form.Group>
               <Form.Group>
                 <Form.Label>From</Form.Label>
-                <Form.Control type="date"/>
+                <Form.Control name="from" type="date"/>
               </Form.Group>
               <Form.Group>
                 <Form.Label>To</Form.Label>
-                <Form.Control type="date"/>
+                <Form.Control name="to" type="date"/>
               </Form.Group>
               <Form.Group>
                 <Form.Label>Certificate</Form.Label>
-                <Form.Control type="file" accept="application/pdf"/>
+                <Form.Control name="certificate" type="file" accept="application/pdf"/>
+              </Form.Group>
+              <Form.Group>
+                <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+                  Submit
+                </Button>
               </Form.Group>
             </Form>
     )
@@ -75,12 +75,8 @@ function AddInternshipModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddInternshipForm/>
+          <AddInternshipForm addInternship = {props.addInternship}/>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide} variant="success">Save</Button>
-          <Button onClick={props.onHide} variant="danger">Discard</Button>
-        </Modal.Footer>
       </Modal>
     );
   }
@@ -95,12 +91,12 @@ function createData(domain, company, from, to, certificate) {
   };
 }
 
-const options = (studentId, internshipId) => <span><Button className="optionView"><a target="_blank" href ={"/student/" + studentId + '/internships/' + internshipId}>View</a></Button><Button variant="danger">Delete</Button></span>;
+const options = (studentId, internshipId, deleteInternship) => <span><Button className="optionView"><a target="_blank" href ={ baseUrl + "students/" + studentId + '/internships/' + internshipId}>View</a></Button><Button variant="danger" onClick = {() => deleteInternship(internshipId)}>Delete</Button></span>;
 
-function loadData(data, studentId){
+function loadData(data, studentId, deleteInternship){
   var rows = [];
   data.map((record) => {
-    rows.push(createData(record.domain, record.companyName, record.from, record.to, options(studentId, record._id)));
+    rows.push(createData(record.domain, record.companyName, record.from, record.to, options(studentId, record._id, deleteInternship)));
   });
   return rows;
 }
@@ -258,7 +254,7 @@ export default function EnhancedTable(props) {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  const rows = loadData(props.student.profile.internships, props.student.profile._id);
+  const rows = loadData(props.student.profile.internships, props.student.profile._id, props.deleteInternship);
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -275,6 +271,7 @@ export default function EnhancedTable(props) {
                 <AddInternshipModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
+                    addInternship = {props.addInternship}
                 />
             </div>
         <TableContainer>

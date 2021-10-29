@@ -7,7 +7,7 @@ import StudentMain from './student/MainComponent';
 import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
 import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile, loadInternshipCertificate } from "../redux/ActionCreators";
-import { addInternship, loadLoggedStudent } from '../redux/ActionCreators';
+import { addInternship, loadLoggedStudent, deleteInternship } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -41,6 +41,7 @@ const mapDispatchToProps = (dispatch) => ({
     loadStudentProfile: (studentId) => dispatch(loadStudentProfile(studentId)),
     loadInternshipCertificate: (studentId, certificateId) => dispatch(loadInternshipCertificate(studentId, certificateId)),
     addInternship: (studentId, internship) => dispatch(addInternship(studentId, internship)),
+    deleteInternship: (internshipId) => dispatch(deleteInternship(internshipId)),
     loadLoggedStudent: () => dispatch(loadLoggedStudent())
 })
 
@@ -95,8 +96,10 @@ class Home extends Component{
                     internship = {this.props.internship}
                     loadInternshipCertificate = {this.props.loadInternshipCertificate}
                     addInternship = {this.props.addInternship}
+                    deleteInternship = {this.props.deleteInternship}
                     auth = {this.props.auth}
                     loadLoggedStudent = {this.props.loadLoggedStudent}
+                    logoutStudent = {this.props.logoutStudent}
                 />
             );
         }
@@ -112,6 +115,17 @@ class Home extends Component{
             )} />
         );
         
+        const PrivateRoute = ({ component: Component, ...rest }) => (
+            <Route {...rest} render={(props) => (
+              this.props.auth.isAuthenticated
+                ? <Component {...props} />
+                : <Redirect to={{
+                    pathname: '/login',
+                    state: { from: props.location }
+                  }} />
+            )} />
+        );
+
         if (this.props.redirect.redirectTo) {
             const path=this.props.redirect.redirectTo;
             this.props.redirect.redirectTo = false;
@@ -123,7 +137,7 @@ class Home extends Component{
                     <Route path = "/login" component = {LoginPage}/>
                     <Route path = "/signup" component = {Signup}/>
                     <TeacherPrivateRoute path = "/teacher" component = {TeacherPage} />
-                    <Route path = "/student" component = {StudentPage}/>
+                    <PrivateRoute path = "/student" component = {StudentPage}/>
                     <Redirect to="/login"/>
                 </Switch>
         );

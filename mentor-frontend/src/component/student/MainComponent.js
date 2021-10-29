@@ -26,7 +26,7 @@ function DisplayMessage({message, removeMessage}) {
 function Main(props) {
     const StudentPrivateRoute = ({ component: Component, ...rest }) => (
         <Route {...rest} render={(props) => (
-          this.props.auth.isAuthenticated && (!this.props.auth.isTeacher)
+          props.auth.isAuthenticated && (!props.auth.isTeacher)
             ? <Component {...props} />
             : <Redirect to={{
                 pathname: '/login',
@@ -42,34 +42,37 @@ function Main(props) {
                 student = {props.student}
                 auth = {props.auth}
                 loadLoggedStudent = {props.loadLoggedStudent}
+                addInternship = {props.addInternship}
+                deleteInternship = {props.deleteInternship}
             />
         );
     }
-    const InternshipPage = () => {
-        return(
-            <InternshipComponent
-                loadInternshipCertificate = {props.loadInternshipCertificate} 
-                internship = {props.internship}
-            />
-        );
-    }
+    // const InternshipPage = () => {
+    //     return(
+    //         <InternshipComponent
+    //             loadInternshipCertificate = {props.loadInternshipCertificate} 
+    //             internship = {props.internship}
+    //             addInternship = {props.addInternship}
+    //         />
+    //     );
+    // }
     return (
         <div className="app">
              <DisplayMessage message = {props.message} removeMessage = {props.removeMessage}/>
             <div className='navss'>
-                <Header />
+                <Header student = {props.student} logoutStudent = {props.logoutStudent}/>
             </div>
             <div className="containers">
-                <NavigationBar />
+                <NavigationBar student = {props.student} logoutStudent = {props.logoutStudent}/>
             </div>
             <div className="container mainSection">
                 <Switch>
                     <Route exact path="/student/:studentId" component={ProfilePage}/>
-                    <Route path="/student/:studentId/internships/:internshipId" component={InternshipPage}/>
+                    {/* <Route path="/student/:studentId/internships/:internshipId" component={InternshipPage}/> */}
                     <StudentPrivateRoute path="/student/home" component={ProfilePage}/>
                     <Route exact path="/student/:studentId/result/:resultId" component={ResultComponent}/>
                     <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
-                    <Redirect to="/student/home"/>
+                    {/* <Redirect to="/student/home"/> */}
                 </Switch>
             </div>
         </div>

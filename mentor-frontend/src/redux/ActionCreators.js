@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../component/baseUrl';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 //TEACHER AUTHENTICATION
@@ -726,15 +727,38 @@ export const loadInternshipCertificate = (studentId, certificateId) => (dispatch
     .catch(error => dispatch(internshipCertificateFailed(error)))
 }
 
-export const addInternship = (studentId, internship) => (dispatch) => {
+export const addInternship = (internship) => (dispatch) => {
+    console.log(internship);
     const bearer = 'Bearer ' + localStorage.getItem('token');
-    return fetch(baseUrl + "students/" + studentId + '/internship', {
-        method: 'POST',
+    return axios.post(baseUrl + "students/internships", internship, {
+            headers: { 
+                'Content-Type':'multipart/form-data',
+                'Authorization': bearer
+            }
+        })
+    .then(response => {
+        console.log(response);
+        if (response.status ==200) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    })
+    .then((response) => dispatch(addMessage("Internship Added Successfully")))
+    .then((response) => dispatch(loadLoggedStudent()))
+    .catch(error => dispatch(addMessage(error)))
+}
+export const deleteInternship = (internshipId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + "students/internships/" + internshipId, {
+        method: 'DELETE',
         headers: { 
             'Content-Type':'application/json',
             'Authorization': bearer
-        },
-        body: JSON.stringify(internship)
+        }
     })
     .then(response => {
         if (response.ok) {
@@ -751,7 +775,7 @@ export const addInternship = (studentId, internship) => (dispatch) => {
         throw errmess;
     })
     .then(response => response.json())
-    .then(response => dispatch(addMessage("Meeting Added Successfully")))
-    .then(() => dispatch(loadStudentProfile(studentId)))
+    .then(response => dispatch(addMessage("Internship Deleted Successfully")))
+    .then(() => dispatch(loadLoggedStudent()))
     .catch(error => dispatch(addMessage(error)))
 }
