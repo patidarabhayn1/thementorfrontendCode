@@ -58,6 +58,21 @@ function Main(props) {
                 addCourse = {props.addCourse}
                 deleteCourse = {props.deleteCourse}
                 result = {props.result}
+                addResult = {props.addResult}
+                editResult = {props.editResult}
+                deleteResult = {props.deleteResult}
+            />
+        );
+    }
+
+    const SubjectPage = () => {
+        return(
+            <SubjectComponent 
+                subject = {props.subject}
+                loadSubjectStudent = {props.loadSubjectStudent}
+                loadSubjectTeacher = {props.loadSubjectTeacher}
+                auth = {props.auth}
+                editSubject = {props.editSubject}
             />
         );
     }
@@ -75,7 +90,7 @@ function Main(props) {
                     <Route exact path="/student/:studentId" component={ProfilePage}/>
                     <StudentPrivateRoute path="/student/home" component={ProfilePage}/>
                     <Route exact path="/student/:studentId/result/:resultId" component={ResultPage}/>
-                    <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
+                    <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectPage}/>
                     <Redirect to="/login"/>
                 </Switch>
             </div>

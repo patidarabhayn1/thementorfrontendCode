@@ -12,6 +12,7 @@ import Student from './student';
 import Internship from './internshipCertificate';
 import Result from './result';
 import Subjects from './subjects';
+import Subject from './subject';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -26,7 +27,8 @@ export const ConfigureStore = () => {
             student: Student,
             internship: Internship,
             result: Result,
-            subjects: Subjects
+            subjects: Subjects,
+            subject: Subject
         }),
         applyMiddleware(thunk, logger)
     );

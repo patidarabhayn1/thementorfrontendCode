@@ -370,7 +370,6 @@ export const loadStudentBatch = (batchId) => (dispatch) => {
         credentials: 'same-origin'
     })
     .then(response => {
-        console.log(response);
         if (response.ok) {
             return response;
         }
@@ -420,7 +419,6 @@ export const addBatch = (batch) => (dispatch) => {
 }
 
 export const editBatch = (batchId, batch) => (dispatch) => {
-    console.log(batchId, batch);
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'mentoring/' + batchId, {
@@ -511,7 +509,6 @@ export const addStudent = (batchId, student) => (dispatch) => {
 }
 
 export const deleteStudent = (batchId, studentId) => (dispatch) => {
-    console.log(batchId, studentId);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'mentoring/' + batchId + '/students/' + studentId , {
         method: 'DELETE',
@@ -710,7 +707,6 @@ export const loadInternshipCertificate = (studentId, certificateId) => (dispatch
         credentials: 'same-origin'
     })
     .then(response => {
-        console.log(response);
         if (response.ok) {
             return response;
         }
@@ -738,7 +734,6 @@ export const addInternship = (internship) => (dispatch) => {
             }
         })
     .then(response => {
-        console.log(response);
         if (response.status ==200) {
             return response;
         }
@@ -790,7 +785,6 @@ export const addCourse = (course) => (dispatch) => {
             }
         })
     .then(response => {
-        console.log(response);
         if (response.status ==200) {
             return response;
         }
@@ -863,7 +857,6 @@ export const loadResultTeacher = (studentId) => (dispatch) => {
         credentials: 'same-origin'
     })
     .then(response => {
-        console.log(response);
         if (response.ok) {
             return response;
         }
@@ -943,7 +936,6 @@ export const loadSubjectsStudent = (resultId) => (dispatch) => {
         credentials: 'same-origin'
     })
     .then(response => {
-        console.log(response);
         if (response.ok) {
             return response;
         }
@@ -974,7 +966,6 @@ export const loadSubjectsTeacher = (studentId, resultId) => (dispatch) => {
         credentials: 'same-origin'
     })
     .then(response => {
-        console.log(response);
         if (response.ok) {
             return response;
         }
@@ -994,7 +985,6 @@ export const loadSubjectsTeacher = (studentId, resultId) => (dispatch) => {
 }
 
 export const addSubject = (resultId, subject) => (dispatch) => {
-    console.log(subject);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'result/' + resultId + '/subjects', {
         method: 'POST',
@@ -1026,6 +1016,38 @@ export const addSubject = (resultId, subject) => (dispatch) => {
     .catch(error => dispatch(addMessage(error)))
 }
 
+export const editSubject = (resultId, subjectId, subject) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'result/' + resultId + '/subjects/' + subjectId, {
+        method: 'PUT',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(subject)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Subject Edited Successfully"));
+        dispatch(loadSubjectStudent(resultId, subjectId));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
 export const deleteSubject = (resultId, subjectId) => (dispatch) => {
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'result/' + resultId + '/subjects/' + subjectId, {
@@ -1053,6 +1075,179 @@ export const deleteSubject = (resultId, subjectId) => (dispatch) => {
     .then((response) => {
         dispatch(addMessage("Subject Deleted Successfully"));
         dispatch(loadSubjectsStudent(resultId));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const subjectLoading = () => {
+    return {
+        type:ActionTypes.SUBJECT_LOADING
+    }
+}
+export const subjectFailed = (errMess) => {
+    return {
+        type:ActionTypes.SUBJECT_FAILED,
+        payload: errMess
+    }
+}
+export const subjectSuccess = (certificate) => {
+    return {
+        type:ActionTypes.SUBJECT_SUCCESS,
+        payload: certificate
+    }
+}
+export const loadSubjectStudent = (resultId, subjectId) => (dispatch) => {
+    dispatch(subjectLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'result/' + resultId + '/subjects/'+subjectId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(subjectSuccess(response)))
+    .catch(error => dispatch(subjectFailed(error)))
+}
+export const loadSubjectTeacher = (studentId, resultId, subjectId) => (dispatch) => {
+    dispatch(subjectLoading());
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'students/' + studentId + 'results/' + resultId + '/subjects/' + subjectId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(subjectSuccess(response)))
+    .catch(error => dispatch(subjectFailed(error)))
+}
+
+export const addResult = (result) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'result/', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(result)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Result Added Successfully"));
+        dispatch(loadResultStudent());
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const editResult = (resultId, result) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'result/' + resultId, {
+        method: 'PUT',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(result)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Result Edited Successfully"));
+        dispatch(loadResultStudent());
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const deleteResult = (resultId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'result/' + resultId, {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Result Deleted Successfully"));
+        dispatch(loadResultStudent());
     })
     .catch(error => dispatch(addMessage(error)))
 }

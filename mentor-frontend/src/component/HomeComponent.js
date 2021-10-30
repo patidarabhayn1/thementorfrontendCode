@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherProfile, removeMessage, loadBatch, loadStudentBatch} from '../redux/ActionCreators';
 import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile, loadInternshipCertificate } from "../redux/ActionCreators";
 import { addInternship, loadLoggedStudent, deleteInternship, addCourse, deleteCourse, loadResultStudent, loadResultTeacher, loadSubjectsStudent, loadSubjectsTeacher } from '../redux/ActionCreators';
-import { addSubject, deleteSubject } from '../redux/ActionCreators';
+import { addSubject, editSubject, deleteSubject, loadSubjectStudent, loadSubjectTeacher } from '../redux/ActionCreators';
+import { addResult, editResult, deleteResult } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -22,7 +23,8 @@ const mapStateToProps = state => {
         student: state.student,
         internship: state.internship,
         result: state.result,
-        subjects: state.subjects
+        subjects: state.subjects,
+        subject: state.subject
     }
 }
 
@@ -48,12 +50,18 @@ const mapDispatchToProps = (dispatch) => ({
     addCourse: (studentId, course) => dispatch(addCourse(studentId, course)),
     deleteCourse: (courseId) => dispatch(deleteCourse(courseId)),
     addSubject: (resultId, subject) => dispatch(addSubject(resultId, subject)),
+    editSubject: (resultId, subjectId, subject) => dispatch(editSubject(resultId, subjectId, subject)),
     deleteSubject: (resultId, subjectId) => dispatch(deleteSubject(resultId, subjectId)),
+    addResult: (subject) => dispatch(addResult(subject)),
+    editResult: (resultId, result) => dispatch(editResult(resultId, result)),
+    deleteResult: (resultId) => dispatch(deleteResult(resultId)),
     loadLoggedStudent: () => dispatch(loadLoggedStudent()),
     loadResultStudent: (resultId) => dispatch(loadResultStudent(resultId)),
     loadResultTeacher: (studentId, resultId) => dispatch(loadResultTeacher(studentId, resultId)),
     loadSubjectsStudent: (resultId) => dispatch(loadSubjectsStudent(resultId)),
-    loadSubjectsTeacher: (studentId, resultId) => dispatch(loadSubjectsTeacher(studentId, resultId))
+    loadSubjectsTeacher: (studentId, resultId) => dispatch(loadSubjectsTeacher(studentId, resultId)),
+    loadSubjectStudent: (resultId, subjectId) => dispatch(loadSubjectStudent(resultId, subjectId)),
+    loadSubjectTeacher: (studentId, resultId, subjectId) => dispatch(loadSubjectTeacher(studentId, resultId, subjectId))
 })
 
 class Home extends Component{
@@ -111,16 +119,23 @@ class Home extends Component{
                     addCourse = {this.props.addCourse}
                     deleteCourse = {this.props.deleteCourse}
                     addSubject = {this.props.addSubject}
+                    editSubject = {this.props.editSubject}
                     deleteSubject = {this.props.deleteSubject}
+                    addResult = {this.props.addResult}
+                    editResult = {this.props.editResult}
+                    deleteResult = {this.props.deleteResult}
                     auth = {this.props.auth}
                     loadLoggedStudent = {this.props.loadLoggedStudent}
                     logoutStudent = {this.props.logoutStudent}
                     result = {this.props.result}
                     subjects = {this.props.subjects}
+                    subject = {this.props.subject}
                     loadResultStudent = {this.props.loadResultStudent}
                     loadResultTeacher = {this.props.loadResultTeacher}
                     loadSubjectsStudent = {this.props.loadSubjectsStudent}
                     loadSubjectsTeacher = {this.props.loadSubjectsTeacher}
+                    loadSubjectStudent = {this.props.loadSubjectStudent}
+                    loadSubjectTeacher = {this.props.loadSubjectTeacher}
                 />
             );
         }

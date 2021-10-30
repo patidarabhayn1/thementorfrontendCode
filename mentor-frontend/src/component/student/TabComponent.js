@@ -9,82 +9,8 @@ import Internship from '../Tables/InternshipTable';
 import Courses from '../Tables/CoursesTable';
 import Absence from '../Tables/MajorAbsenceTable';
 import Activity from '../Tables/IndisciplinaryActivityTable';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import LoadingComponent from '../LoadingComponent';
 import SemesterComponent from '../Tables/semesterList';
-
-function AddSemesterForm() {
-  const onFinish = values => {
-      console.log('Success:', values);
-  };
-
-  const onFinishFailed = errorInfo => {
-      console.log('Failed:', errorInfo);
-  };
-
-  return (
-          <Form
-              name="login-form"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-          >
-            
-        <p style={{color: "red"}}>PLEASE ENTER DETAILS ONLY WHICH ARE AVAILABLE</p>
-            <Form.Group>
-              <Form.Label>Semester</Form.Label>
-              <Form.Select aria-label="Default select example">
-                <option>-</option>
-                <option value="1">Odd</option>
-                <option value="2">Even</option>
-                <option value="3">Makeup</option>
-              </Form.Select>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Year</Form.Label>
-              <Form.Control type="number" min="1" max="5" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>CGPA</Form.Label>
-              <Form.Control type="number" min="1" max="5" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>SGPA</Form.Label>
-              <Form.Control type="number" min="0" max="10" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Credits Earned</Form.Label>
-              <Form.Control type="number" min="0" max="30 "/>
-            </Form.Group>
-          </Form>
-  )
-}
-
-function AddSemesterModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Add Semester
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <AddSemesterForm/>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide} variant="success">Save</Button>
-        <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -122,7 +48,13 @@ function a11yProps(index) {
 function LoadResult(props){
     if(props.result.result != null){
       return(
-          <SemesterComponent result = {props.result} student = {props.student}/>
+          <SemesterComponent 
+                result = {props.result} 
+                student = {props.student}
+                addResult = {props.addResult}
+                editResult = {props.editResult}
+                deleteResult = {props.deleteResult}
+          />
       );
     }
     else if (props.result.errMess) {
@@ -183,8 +115,11 @@ export default function BasicTabs(props) {
       </TabPanel>
       <TabPanel value={value} index={2}>
             <LoadResult 
-            result = {props.result}
-            student = {props.student} 
+                result = {props.result}
+                student = {props.student} 
+                addResult = {props.addResult}
+                editResult = {props.editResult}
+                deleteResult = {props.deleteResult}
             />
       </TabPanel>
       <TabPanel value={value} index={3}>

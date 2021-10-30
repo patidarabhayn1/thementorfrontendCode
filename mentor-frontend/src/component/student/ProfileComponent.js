@@ -67,6 +67,9 @@ function LoadProfile(props) {
                             addCourse = {props.addCourse}
                             deleteCourse = {props.deleteCourse}
                             result = {props.result}
+                            addResult = {props.addResult}
+                            editResult = {props.editResult}
+                            deleteResult = {props.deleteResult}
                 />
             </div>
         </div>
@@ -108,6 +111,9 @@ function Profiles(props) {
                 addCourse = {props.addCourse}
                 deleteCourse = {props.deleteCourse}
                 result = {props.result}
+                addResult = {props.addResult}
+                editResult = {props.editResult}
+                deleteResult = {props.deleteResult}
             />
     );
 }

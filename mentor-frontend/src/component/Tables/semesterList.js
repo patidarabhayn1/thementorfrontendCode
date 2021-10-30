@@ -25,19 +25,20 @@ import { baseUrl } from '../baseUrl';
 function AddSemesterForm(props) {
     const onFinish = e => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        props.addInternship(formData);
+        const formData = new FormData(e.target),
+            formDataObj = Object.fromEntries(formData.entries());
+        console.log(formDataObj);
+        props.addResult(formDataObj);
       };
   
     return (
             <Form
                 onSubmit={onFinish}
-            >
-              
+            > 
           <p style={{color: "red"}}>PLEASE ENTER DETAILS ONLY WHICH ARE AVAILABLE</p>
               <Form.Group>
                 <Form.Label>Semester</Form.Label>
-                <Form.Select aria-label="Default select example">
+                <Form.Select name="sem" aria-label="Default select example">
                   <option>-</option>
                   <option value="1">Odd</option>
                   <option value="2">Even</option>
@@ -46,20 +47,25 @@ function AddSemesterForm(props) {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Year</Form.Label>
-                <Form.Control type="number" min="1" max="5" />
+                <Form.Control name="year" type="number" min="1" max="5" />
               </Form.Group>
               <Form.Group>
                 <Form.Label>CGPA</Form.Label>
-                <Form.Control type="number" min="1" max="5" />
+                <Form.Control name="cgpa" type="number" min="0" max="10" step = "0.01"/>
               </Form.Group>
               <Form.Group>
                 <Form.Label>SGPA</Form.Label>
-                <Form.Control type="number" min="0" max="10" />
+                <Form.Control name="sgpa" type="number" min="0" max="10" step = "0.01"/>
               </Form.Group>
               <Form.Group>
                 <Form.Label>Credits Earned</Form.Label>
-                <Form.Control type="number" min="0" max="30 "/>
+                <Form.Control name="creditsEarned" type="number" min="0" max="30 "/>
               </Form.Group>
+              <Form.Group>
+                    <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+                    Submit
+                    </Button>
+                </Form.Group>
             </Form>
     )
 }
@@ -78,7 +84,7 @@ return (
         </Modal.Title>
     </Modal.Header>
     <Modal.Body>
-        <AddSemesterForm/>
+        <AddSemesterForm addResult = {props.addResult}/>
     </Modal.Body>
     </Modal>
 );
@@ -104,12 +110,12 @@ function createData(sem, year, cgpa, sgpa, credits, optons) {
   };
 }
 
-const options = (studentId, resultId) => <span><Button className="optionView"><Link to={"/student/" + studentId + "/result/"+ resultId}>View</Link></Button><Button variant="danger">Delete</Button></span>;
+const options = (studentId, resultId, deleteResult) => <span><Button className="optionView"><Link to={"/student/" + studentId + "/result/"+ resultId}>View</Link></Button><Button variant="danger" onClick = {() => deleteResult(resultId)}>Delete</Button></span>;
 
-function loadData(data, studentId) {
+function loadData(data, studentId, deleteResult) {
   var rows = [];
   data.map((record) => {
-    rows.push(createData(record.sem, record.year, record.cgpa, record.sgpa, record.creditsEarned, options(studentId, record._id)));
+    rows.push(createData(record.sem, record.year, record.cgpa, record.sgpa, record.creditsEarned, options(studentId, record._id, deleteResult)));
   });
   return rows;
 }
@@ -273,7 +279,7 @@ export default function EnhancedTable(props) {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  const rows = loadData(props.result.result, props.student.profile._id)
+  const rows = loadData(props.result.result, props.student.profile._id, props.deleteResult)
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -290,6 +296,7 @@ export default function EnhancedTable(props) {
             <AddSemesterModal
                 show={modalShow}
                 onHide={() => setModalShow(false)}
+                addResult = {props.addResult}
             />
         </div>
         <TableContainer>
