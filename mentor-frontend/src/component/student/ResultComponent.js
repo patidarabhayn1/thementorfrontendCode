@@ -5,60 +5,56 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Result from '../Tables/Result';
+import { useParams } from 'react-router';
+import LoadingComponent from '../LoadingComponent';
 
-function AddInternshipForm() {
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-    };
+function AddInternshipForm(props) {
+    const onFinish = e => {
+        e.preventDefault();
+        const formData = new FormData(e.target),
+              formDataObj = Object.fromEntries(formData.entries());
+        props.addSubject(props.resultId, formDataObj);
+      };
 
     return (
-            <Form
-                name="login-form"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-            >
+            <Form onSubmit={onFinish}>
                 <Row>
                     <Col>
                         <Form.Label>Course Code</Form.Label>
-                        <Form.Control type="text"/>
+                        <Form.Control required name="course" type="text"/>
                     </Col>
                     <Col>
                         <Form.Label>Credits</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control required name="credits" type="number"/>
                     </Col>
                 </Row>
                 
                 <Row>
                     <Col>
                         <Form.Label>MST 1</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control name="mst1" type="number"/>
                     </Col>
                     <Col>
                         <Form.Label>MST 2</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control name="mst2" type="number"/>
                     </Col>
                 </Row>
                 
                 <Row>
                     <Col>
                         <Form.Label>Attendence Theory</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control name='attendenceT' type="number"/>
                     </Col>
                     <Col>
                         <Form.Label>Attendence Practical</Form.Label>
-                        <Form.Control type="number"/>
+                        <Form.Control name="attendenceP" type="number"/>
                     </Col>
                 </Row>
 
                 <Row>
                     <Col>
                         <Form.Label>End Semester Theory Grade</Form.Label>
-                        <Form.Select aria-label="Default select example">
+                        <Form.Select name="endSemT" aria-label="Default select example">
                             <option>-</option>
                             <option value="O">O</option>
                             <option value="A+">A+</option>
@@ -75,7 +71,7 @@ function AddInternshipForm() {
                     </Col>
                     <Col>
                         <Form.Label>End Semester Practical Grade</Form.Label>
-                        <Form.Select aria-label="Default select example">
+                        <Form.Select name="endSemP" aria-label="Default select example">
                             <option>-</option>
                             <option value="O">O</option>
                             <option value="A+">A+</option>
@@ -95,18 +91,29 @@ function AddInternshipForm() {
                 <Row>
                     <Col>
                         <Form.Check 
+                            defaultValue
                             type="checkbox"
                             id="isTheory"
                             label="isTheory"
+                            name="isTheory"
+                            aria-label="isTheory"
                         />
                         <Form.Check 
+                            defaultValue
                             type="checkbox"
                             id="isPractical"
                             label="isPractical"
+                            name="isPractical"
                         />
                     </Col>
                 </Row>
+                <Form.Group>
+                    <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+                    Submit
+                    </Button>
+                </Form.Group>
             </Form>
+           
     )
 }
 
@@ -124,18 +131,54 @@ function AddInternshipModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddInternshipForm/>
+          <AddInternshipForm addSubject = {props.addSubject} resultId = {props.resultId}/>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide} variant="success">Save</Button>
-          <Button onClick={props.onHide} variant="danger">Discard</Button>
-        </Modal.Footer>
       </Modal>
     );
   }
 
-function AddResult(){
-  const [modalShow, setModalShow] = React.useState(false);
+function LoadSubjects(props) {
+    if(props.subjects.subjects != null) {
+        return(
+            <Result subjects = {props.subjects}
+                    studentId = {props.studentId}
+                    resultId = {props.resultId}
+                    deleteSubject = {props.deleteSubject}
+            />
+        );
+    }
+    else if(props.subjects.errMess){
+        return(
+            <h2>{props.subjects.errMess}</h2>
+        );
+    }
+    else {
+        return(
+             <LoadingComponent />
+        );
+    }
+}
+
+function AddResult(props){
+    const [modalShow, setModalShow] = React.useState(false);
+
+    const { studentId, resultId }  = useParams();
+    if(props.auth.isTeacher){
+        if (!props.subjects.errMess && !props.subjects.isLoading) {
+            if(props.subjects.subjects == null)
+                props.loadSubjectsTeacher(studentId, resultId);
+            // else if(props.subjects.subjects._id != resultId)
+            //     props.loadSubjectsTeacher(studentId, resultId);
+        }
+    }
+    else {
+        if (!props.subjects.errMess && !props.subjects.isLoading) {
+            if(props.subjects.subjects == null)
+                props.loadSubjectsStudent(resultId);
+            // else if(props.subjects.subjects._id != resultId)
+            //     props.loadSubjectsStudent(resultId);
+        }
+    }
     return(
         <>
             <div  className="addButton">
@@ -146,9 +189,16 @@ function AddResult(){
                 <AddInternshipModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
+                    addSubject = {props.addSubject}
+                    resultId = {resultId}
                 />
             </div>
-            <Result/>
+            <LoadSubjects 
+                    subjects = {props.subjects}
+                    studentId = {studentId}
+                    resultId = {resultId}
+                    deleteSubject = {props.deleteSubject}
+            />
         </>
     );
 }

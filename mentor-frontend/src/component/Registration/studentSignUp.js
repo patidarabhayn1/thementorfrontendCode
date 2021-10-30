@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import '../../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
-import { Menu, Dropdown, Button, message, Select } from "antd";
-import { Link, NavLink } from 'react-router-dom';
+import {Button, Select } from "antd";
+import { Link } from 'react-router-dom';
 
 
 export default function StudentSignUp() {
@@ -107,7 +107,7 @@ export default function StudentSignUp() {
                 </Form.Item>
 
                 <Form.Item name="remember" valuePropName="checked">
-                    <a href="#">Forgot Password</a>
+                    <a href="/login">Forgot Password</a>
                 </Form.Item>
                 <Form.Item name="remember" valuePropName="checked">
                     <Link to="/login">

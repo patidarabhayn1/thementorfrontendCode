@@ -16,24 +16,100 @@ import Paper from "@mui/material/Paper";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
-import {Link} from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { Link } from 'react-router-dom';
+import { baseUrl } from '../baseUrl';
 
-function createData(courseCode, name, credits, options) {
+function AddSemesterForm(props) {
+    const onFinish = e => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        props.addInternship(formData);
+      };
+  
+    return (
+            <Form
+                onSubmit={onFinish}
+            >
+              
+          <p style={{color: "red"}}>PLEASE ENTER DETAILS ONLY WHICH ARE AVAILABLE</p>
+              <Form.Group>
+                <Form.Label>Semester</Form.Label>
+                <Form.Select aria-label="Default select example">
+                  <option>-</option>
+                  <option value="1">Odd</option>
+                  <option value="2">Even</option>
+                  <option value="3">Makeup</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Year</Form.Label>
+                <Form.Control type="number" min="1" max="5" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>CGPA</Form.Label>
+                <Form.Control type="number" min="1" max="5" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>SGPA</Form.Label>
+                <Form.Control type="number" min="0" max="10" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Credits Earned</Form.Label>
+                <Form.Control type="number" min="0" max="30 "/>
+              </Form.Group>
+            </Form>
+    )
+}
+  
+function AddSemesterModal(props) {
+return (
+    <Modal
+    {...props}
+    size="lg"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+    >
+    <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+        Add Semester
+        </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+        <AddSemesterForm/>
+    </Modal.Body>
+    </Modal>
+);
+}
+
+function createData(sem, year, cgpa, sgpa, credits, optons) {
+  if(sem == 1){
+    sem = "Odd"
+  }
+  else if( sem == 2){
+    sem = "Even"
+  }
+  else if(sem ==3) {
+    sem = "Makeup"
+  }
   return {
-    courseCode,
-    name,
+    sem,
+    year,
+    cgpa,
+    sgpa,
     credits,
-    options
+    optons
   };
 }
 
-const options = (subjectId, studentId, resultId, deleteSubject) => <span><Button className="optionView"><Link to={"/student/" + studentId + "/result/" + resultId + "/" + subjectId}>View</Link></Button><Button variant="danger" onClick = {() => deleteSubject(resultId, subjectId)}>Delete</Button></span>;
+const options = (studentId, resultId) => <span><Button className="optionView"><Link to={"/student/" + studentId + "/result/"+ resultId}>View</Link></Button><Button variant="danger">Delete</Button></span>;
 
-function loadData(data, studentId, resultId, deleteSubject) {
+function loadData(data, studentId) {
   var rows = [];
-  data[0].subjects.map((record) => {
-    rows.push(createData(record.course.courseCode, record.course.name, record.credits, options(record._id, studentId, resultId, deleteSubject)));
+  data.map((record) => {
+    rows.push(createData(record.sem, record.year, record.cgpa, record.sgpa, record.creditsEarned, options(studentId, record._id)));
   });
   return rows;
 }
@@ -70,16 +146,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "courseCode",
+    id: "sem",
     numeric: false,
     disablePadding: true,
-    label: "Course Code"
+    label: "Sem"
   },
   {
-    id: "name",
+    id: "year",
     numeric: true,
     disablePadding: false,
-    label: "Subject Name"
+    label: "Year"
+  },
+  {
+    id: "cgpa",
+    numeric: true,
+    disablePadding: false,
+    label: "CGPA"
+  },
+  {
+    id: "sgpa",
+    numeric: true,
+    disablePadding: false,
+    label: "SGPA"
   },
   {
     id: "credits",
@@ -88,7 +176,7 @@ const headCells = [
     label: "Credits"
   },
   {
-    id: "options",
+    id: "optons",
     numeric: true,
     disablePadding: false,
     label: "Options"
@@ -154,15 +242,16 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        Subjects' List
+        Semester List
       </Typography>
     </Toolbar>
   );
 };
 
 export default function EnhancedTable(props) {
+  const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("courseCode");
+  const [orderBy, setOrderBy] = React.useState("year");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -184,7 +273,7 @@ export default function EnhancedTable(props) {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  const rows = loadData(props.subjects.subjects, props.studentId, props.resultId, props.deleteSubject);
+  const rows = loadData(props.result.result, props.student.profile._id)
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -193,6 +282,16 @@ export default function EnhancedTable(props) {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
+        <div  className="addButton">
+            <Button variant="success" onClick={() => setModalShow(true)}>
+                Add Semester
+            </Button>
+
+            <AddSemesterModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+            />
+        </div>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -218,7 +317,7 @@ export default function EnhancedTable(props) {
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.courseCode}
+                      key={row.sem}
                     >
                       <TableCell padding="checkbox"></TableCell>
                       <TableCell
@@ -227,11 +326,13 @@ export default function EnhancedTable(props) {
                         scope="row"
                         padding="none"
                       >
-                        {row.courseCode}
+                        {row.sem}
                       </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">{row.credits}</TableCell>  
-                      <TableCell align="right">{row.options}</TableCell>
+                      <TableCell align="right">{row.year}</TableCell>
+                      <TableCell align="right">{row.cgpa}</TableCell>
+                      <TableCell align="right">{row.sgpa}</TableCell>
+                      <TableCell align="right">{row.credits}</TableCell>
+                      <TableCell align="right">{row.optons}</TableCell>
                     </TableRow>
                   );
                 })}

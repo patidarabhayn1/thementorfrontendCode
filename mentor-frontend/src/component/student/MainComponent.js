@@ -5,13 +5,11 @@ import { Route, Redirect, Switch} from 'react-router-dom';
 import ProfileComponent from './ProfileComponent';
 import ResultComponent from './ResultComponent';
 import SubjectComponent from './SubjectComponent';
-import InternshipComponent from './InternshipComponent';
 import MessageComponent from '../Registration/messageComponent';
 
 function DisplayMessage({message, removeMessage}) {
     if(message.showMessage){
         const mess = message.showMessage;
-        // removeMessage();
         return(
             <MessageComponent message={mess} removeMessage={removeMessage}/>
         );
@@ -35,6 +33,19 @@ function Main(props) {
         )} />
     );
 
+    const ResultPage = () => {
+        return(
+            <ResultComponent 
+                    loadSubjectsStudent = {props.loadSubjectsStudent}
+                    loadSubjectsTeacher = {props.loadSubjectsTeacher}
+                    auth = {props.auth}
+                    subjects = {props.subjects}
+                    addSubject = {props.addSubject}
+                    deleteSubject = {props.deleteSubject}
+            />
+        );
+    }
+
     const ProfilePage = () => {
         return(
             <ProfileComponent
@@ -46,18 +57,10 @@ function Main(props) {
                 deleteInternship = {props.deleteInternship}
                 addCourse = {props.addCourse}
                 deleteCourse = {props.deleteCourse}
+                result = {props.result}
             />
         );
     }
-    // const InternshipPage = () => {
-    //     return(
-    //         <InternshipComponent
-    //             loadInternshipCertificate = {props.loadInternshipCertificate} 
-    //             internship = {props.internship}
-    //             addInternship = {props.addInternship}
-    //         />
-    //     );
-    // }
     return (
         <div className="app">
              <DisplayMessage message = {props.message} removeMessage = {props.removeMessage}/>
@@ -70,11 +73,10 @@ function Main(props) {
             <div className="container mainSection">
                 <Switch>
                     <Route exact path="/student/:studentId" component={ProfilePage}/>
-                    {/* <Route path="/student/:studentId/internships/:internshipId" component={InternshipPage}/> */}
                     <StudentPrivateRoute path="/student/home" component={ProfilePage}/>
-                    <Route exact path="/student/:studentId/result/:resultId" component={ResultComponent}/>
+                    <Route exact path="/student/:studentId/result/:resultId" component={ResultPage}/>
                     <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectComponent}/>
-                    {/* <Redirect to="/student/home"/> */}
+                    <Redirect to="/login"/>
                 </Switch>
             </div>
         </div>

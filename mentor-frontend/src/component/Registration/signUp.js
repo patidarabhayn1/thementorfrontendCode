@@ -8,13 +8,13 @@ const Register = () => {
     const [currentState, setCurrentState] = useState(1);
 
 
-    function handleClick(button) {
-        if (button === 'signUp') {
-            setCurrentState(0);
-        } else if (button == 'signIn') {
-            setCurrentState(1);
-        }
-    }
+    // function handleClick(button) {
+    //     if (button === 'signUp') {
+    //         setCurrentState(0);
+    //     } else if (button == 'signIn') {
+    //         setCurrentState(1);
+    //     }
+    // }
 
     return (
         <div className="login-page">

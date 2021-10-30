@@ -66,6 +66,7 @@ function LoadProfile(props) {
                             deleteInternship = {props.deleteInternship}
                             addCourse = {props.addCourse}
                             deleteCourse = {props.deleteCourse}
+                            result = {props.result}
                 />
             </div>
         </div>
@@ -106,6 +107,7 @@ function Profiles(props) {
                 deleteInternship = {props.deleteInternship}
                 addCourse = {props.addCourse}
                 deleteCourse = {props.deleteCourse}
+                result = {props.result}
             />
     );
 }

@@ -12,6 +12,8 @@ import Activity from '../Tables/IndisciplinaryActivityTable';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import LoadingComponent from '../LoadingComponent';
+import SemesterComponent from '../Tables/semesterList';
 
 function AddSemesterForm() {
   const onFinish = values => {
@@ -117,6 +119,24 @@ function a11yProps(index) {
   };
 }
 
+function LoadResult(props){
+    if(props.result.result != null){
+      return(
+          <SemesterComponent result = {props.result} student = {props.student}/>
+      );
+    }
+    else if (props.result.errMess) {
+      return (
+        <h2>{props.result.errMess}</h2>
+      );
+    }
+    else {
+      return (
+        <LoadingComponent />
+      );
+    }
+}
+
 export default function BasicTabs(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [value, setValue] = React.useState(0);
@@ -162,33 +182,10 @@ export default function BasicTabs(props) {
         />
       </TabPanel>
       <TabPanel value={value} index={2}>
-            <div  className="addButton">
-                <Button variant="success" onClick={() => setModalShow(true)}>
-                    Add Semester
-                </Button>
-
-                <AddSemesterModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                />
-            </div>
-        <Form>
-          <Form.Group>
-            <Form.Label>Select Semester</Form.Label>
-            <Form.Select aria-label="Default select example">
-              <option>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Select>
-          </Form.Group>
-            <Button variant="success" type="submit" style={{marginTop: 10}}>
-              <Link to="/student/:studentId/result/:resutId">
-              Submit
-              </Link>
-            </Button>
-        </Form>
-        {/* <Result/> */}
+            <LoadResult 
+            result = {props.result}
+            student = {props.student} 
+            />
       </TabPanel>
       <TabPanel value={value} index={3}>
           <Absence/>
