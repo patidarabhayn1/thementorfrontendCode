@@ -70,6 +70,10 @@ function LoadProfile(props) {
                             addResult = {props.addResult}
                             editResult = {props.editResult}
                             deleteResult = {props.deleteResult}
+                            addAbsence = {props.addAbsence}
+                            deleteAbsence = {props.deleteAbsence}
+                            addActivity = {props.addActivity}
+                            deleteActivity = {props.deleteActivity}
                 />
             </div>
         </div>
@@ -114,6 +118,10 @@ function Profiles(props) {
                 addResult = {props.addResult}
                 editResult = {props.editResult}
                 deleteResult = {props.deleteResult}
+                addAbsence = {props.addAbsence}
+                deleteAbsence = {props.deleteAbsence}
+                addActivity = {props.addActivity}
+                deleteActivity = {props.deleteActivity}
             />
     );
 }

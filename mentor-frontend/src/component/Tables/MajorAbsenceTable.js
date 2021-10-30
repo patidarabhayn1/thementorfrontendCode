@@ -20,33 +20,33 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function AddInternshipForm() {
-  const onFinish = values => {
-      console.log('Success:', values);
+function AddInternshipForm(props) {
+  const onFinish = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target),
+        formDataObj = Object.fromEntries(formData.entries());
+    props.addAbsence(props.studentId, formDataObj);
   };
 
-  const onFinishFailed = errorInfo => {
-      console.log('Failed:', errorInfo);
-  };
 
   return (
-          <Form
-              name="login-form"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-          >
+          <Form onSubmit={onFinish}>
             <Form.Group>
               <Form.Label>Reason</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control name="reason" type="text"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>From</Form.Label>
-              <Form.Control type="date"/>
+              <Form.Control name="from" type="date"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>To</Form.Label>
-              <Form.Control type="date"/>
+              <Form.Control name='to' type="date"/>
+            </Form.Group>
+            <Form.Group>
+                <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+                Submit
+                </Button>
             </Form.Group>
           </Form>
   )
@@ -66,12 +66,8 @@ function AddInternshipModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddInternshipForm/>
+        <AddInternshipForm addAbsence = {props.addAbsence} studentId = {props.studentId}/>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide} variant="success">Save</Button>
-        <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer>
     </Modal>
   );
 }
@@ -85,28 +81,15 @@ function createData(reason, from, to, button) {
   };
 }
 
-const deleteButton = <button className="btn btn-danger">Delete</button>;
+const options = (studentId, absenceId, deleteAbsence) => <Button variant="danger" onClick={() => deleteAbsence(studentId, absenceId)}>Delete</Button>;
 
-const rows = [
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton),
-  createData("Being Gourav", "2020-10-10", "2020-11-10", deleteButton)
-];
+function loadData(data, studentId, deleteAbsence) {
+  var rows = [];
+  data.map((record) => {
+    rows.push(createData(record.reason, record.from, record.to, options(studentId, record._id, deleteAbsence)));
+  });
+  return rows;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -230,7 +213,7 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("reason");
@@ -255,7 +238,7 @@ export default function EnhancedTable() {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
+  const rows = loadData(props.student.profile.majorAbsence, props.student.profile._id, props.deleteAbsence)
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -272,6 +255,8 @@ export default function EnhancedTable() {
                 <AddInternshipModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
+                    addAbsence = {props.addAbsence}
+                    studentId = {props.student.profile._id}
                 />
             </div>
         <TableContainer>

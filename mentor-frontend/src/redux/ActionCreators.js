@@ -641,7 +641,7 @@ export const loadStudentProfile = (studentId) => (dispatch) => {
     })
     .then(response => response.json())
     .then(response => dispatch(studentProfileSuccess(response)))
-    .then((response) => dispatch(loadResultTeacher(response._id)))
+    .then((response) => dispatch(loadResultTeacher(studentId)))
     .catch(error => dispatch(studentProfileFailed(error)))
 }
 
@@ -1248,6 +1248,191 @@ export const deleteResult = (resultId) => (dispatch) => {
     .then((response) => {
         dispatch(addMessage("Result Deleted Successfully"));
         dispatch(loadResultStudent());
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const createTeacher = (teacher) => (dispatch) => {
+    return fetch(baseUrl + 'teachers/signup', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(teacher)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Teacher Account Created"));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const createStudent = (student) => (dispatch) => {
+    console.log(student);
+    return fetch(baseUrl + 'students/signup', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(student)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Student Account Created"));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const addAbsence = (studentId, absence) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'students/' + studentId + '/absence', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(absence)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Absence Added Successfully"));
+        dispatch(loadStudentProfile(studentId));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const deleteAbsence = (studentId, absenceId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'students/' + studentId + '/absence/' + absenceId, {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Absence Deleted Successfully"));
+        dispatch(loadStudentProfile(studentId));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const addActivity = (studentId, activity) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'students/' + studentId + '/activity', {
+        method: 'POST',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(activity)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Activity Added Successfully"));
+        dispatch(loadStudentProfile(studentId));
+    })
+    .catch(error => dispatch(addMessage(error)))
+}
+
+export const deleteActivity = (studentId, activityId) => (dispatch) => {
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+    return fetch(baseUrl + 'students/' + studentId + '/activity/' + activityId, {
+        method: 'DELETE',
+        headers: { 
+            'Content-Type':'application/json',
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then((response) => {
+        dispatch(addMessage("Activity Deleted Successfully"));
+        dispatch(loadStudentProfile(studentId));
     })
     .catch(error => dispatch(addMessage(error)))
 }

@@ -9,7 +9,7 @@ import { loginTeacher, logoutTeacher, loginStudent, logoutStudent, loadTeacherPr
 import { addBatch, deleteBatch, addStudent, deleteStudent, addMeeting, deleteMeeting,  loadStudentProfile, loadInternshipCertificate } from "../redux/ActionCreators";
 import { addInternship, loadLoggedStudent, deleteInternship, addCourse, deleteCourse, loadResultStudent, loadResultTeacher, loadSubjectsStudent, loadSubjectsTeacher } from '../redux/ActionCreators';
 import { addSubject, editSubject, deleteSubject, loadSubjectStudent, loadSubjectTeacher } from '../redux/ActionCreators';
-import { addResult, editResult, deleteResult } from '../redux/ActionCreators';
+import { addResult, editResult, deleteResult, createStudent, createTeacher,  addAbsence, deleteAbsence,  addActivity, deleteActivity } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -31,6 +31,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => ({
     loginStudent: (creds) => dispatch(loginStudent(creds)),
     loginTeacher: (creds) => dispatch(loginTeacher(creds)),
+    createStudent: (student) => dispatch(createStudent(student)),
+    createTeacher: (teacher) => dispatch(createTeacher(teacher)),
     logoutStudent: () => dispatch(logoutStudent()),
     logoutTeacher: () => dispatch(logoutTeacher()),
     loadTeacherProfile: () => dispatch(loadTeacherProfile()),
@@ -60,8 +62,13 @@ const mapDispatchToProps = (dispatch) => ({
     loadResultTeacher: (studentId, resultId) => dispatch(loadResultTeacher(studentId, resultId)),
     loadSubjectsStudent: (resultId) => dispatch(loadSubjectsStudent(resultId)),
     loadSubjectsTeacher: (studentId, resultId) => dispatch(loadSubjectsTeacher(studentId, resultId)),
+    addAbsence: (studentId, absence) => dispatch(addAbsence(studentId, absence)),
+    deleteAbsence: (studentId, absenceId) => dispatch(deleteAbsence(studentId, absenceId)),
+    addActivity: (studentId, activity) => dispatch(addActivity(studentId, activity)),
+    deleteActivity: (studentId, activityId) => dispatch(deleteActivity(studentId, activityId)),
     loadSubjectStudent: (resultId, subjectId) => dispatch(loadSubjectStudent(resultId, subjectId)),
     loadSubjectTeacher: (studentId, resultId, subjectId) => dispatch(loadSubjectTeacher(studentId, resultId, subjectId))
+
 })
 
 class Home extends Component{
@@ -78,7 +85,22 @@ class Home extends Component{
                     auth = {this.props.auth}
                     message = {this.props.message}
                     loginStudent={this.props.loginStudent} 
-                    loginTeacher={this.props.loginTeacher} 
+                    loginTeacher={this.props.loginTeacher}
+                    message={this.props.message} 
+                    removeMessage = {this.props.removeMessage} 
+                />
+            )
+        }
+
+        const SignupPage = () => {
+            return(
+                <Signup
+                    auth = {this.props.auth}
+                    message = {this.props.message}
+                    createStudent={this.props.createStudent} 
+                    createTeacher={this.props.createTeacher} 
+                    message={this.props.message} 
+                    removeMessage = {this.props.removeMessage}
                 />
             )
         }
@@ -136,6 +158,10 @@ class Home extends Component{
                     loadSubjectsTeacher = {this.props.loadSubjectsTeacher}
                     loadSubjectStudent = {this.props.loadSubjectStudent}
                     loadSubjectTeacher = {this.props.loadSubjectTeacher}
+                    addAbsence = {this.props.addAbsence}
+                    deleteAbsence = {this.props.deleteAbsence}
+                    addActivity = {this.props.addActivity}
+                    deleteActivity = {this.props.deleteActivity}
                 />
             );
         }
@@ -171,7 +197,7 @@ class Home extends Component{
         return(
                 <Switch>
                     <Route path = "/login" component = {LoginPage}/>
-                    <Route path = "/signup" component = {Signup}/>
+                    <Route path = "/signup" component = {SignupPage}/>
                     <TeacherPrivateRoute path = "/teacher" component = {TeacherPage} />
                     <PrivateRoute path = "/student" component = {StudentPage}/>
                     <Redirect to="/login"/>

@@ -9,7 +9,6 @@ import MessageComponent from '../Registration/messageComponent';
 function DisplayMessage({message, removeMessage}) {
     if(message.showMessage){
         const mess = message.showMessage;
-        // removeMessage();
         return(
             <MessageComponent message={mess} removeMessage={removeMessage}/>
         );

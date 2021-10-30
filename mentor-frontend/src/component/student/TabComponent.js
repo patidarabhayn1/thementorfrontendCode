@@ -123,10 +123,18 @@ export default function BasicTabs(props) {
             />
       </TabPanel>
       <TabPanel value={value} index={3}>
-          <Absence/>
+          <Absence 
+            student = {props.student} 
+            addAbsence = {props.addAbsence} 
+            deleteAbsence = {props.deleteAbsence}
+          />
       </TabPanel>
       <TabPanel value={value} index={4}>
-          <Activity/>
+          <Activity 
+              student = {props.student}
+              addActivity = {props.addActivity}
+              deleteActivity = {props.deleteActivity}
+          />
       </TabPanel>
     </div>
   );

@@ -3,26 +3,21 @@ import 'antd/dist/antd.css';
 import '../../styles/Register.css'
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
-import {Button, Select } from "antd";
+import {Button, Select, DatePicker } from "antd";
 import { Link } from 'react-router-dom';
 
 
-export default function StudentSignUp() {
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-    };
+export default function StudentSignUp(props) {
+    function handleLogin(values) {
+        props.createStudent(values);
+    }
 
     return (
         <div className="formss">
             <Form
                 name="login-form"
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
+                onFinish={handleLogin}
             >
                 <p className="form-title">Welcome To "The Mentor"</p>
                 <p>SignUp</p>
@@ -42,8 +37,8 @@ export default function StudentSignUp() {
                         placeholder="Enrollment Number"
                     />
                 </Form.Item>
-                
-                <Form.Item label="Branch">
+                <div>
+                {/* <Form.Item label="Branch">
                 <Select showSearch>
                     <Select.Option value="demo">Demo</Select.Option>
                     <Select.Option value="demo">Demo</Select.Option>
@@ -88,13 +83,41 @@ export default function StudentSignUp() {
                     <Select.Option value="demo">Demo</Select.Option>
 
                 </Select>
+                </Form.Item>*/}
+                </div>
+                <Form.Item 
+                    name="degree"
+                    rules={[{ required: true, message: 'Please input degree!' }]}
+                >
+                    <Input
+                        placeholder="Degree"
+                    />
                 </Form.Item>
-                <Form.Item
+                <Form.Item label="Admission Date" name="admissionDate">
+                    <DatePicker />
+                </Form.Item>
+                <Form.Item 
+                    name="branch"
+                    rules={[{ required: true, message: 'Please input branch!' }]}
+                >
+                    <Input
+                        placeholder="Branch"
+                    />
+                </Form.Item>
+                <Form.Item 
                     name="email"
                     rules={[{ required: true, type: "email", message: 'Please input valid email!' }]}
                 >
                     <Input
                         placeholder="Email"
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="phoneNumber"
+                    rules={[{ required: true, message: 'Please input Phone Number' }]}
+                >
+                    <Input
+                        placeholder="Mobile number"
                     />
                 </Form.Item>
                 <Form.Item
@@ -105,11 +128,7 @@ export default function StudentSignUp() {
                         placeholder="Password"
                     />
                 </Form.Item>
-
-                <Form.Item name="remember" valuePropName="checked">
-                    <a href="/login">Forgot Password</a>
-                </Form.Item>
-                <Form.Item name="remember" valuePropName="checked">
+                <Form.Item>
                     <Link to="/login">
                         <span>Already have an account </span>
                     </Link>

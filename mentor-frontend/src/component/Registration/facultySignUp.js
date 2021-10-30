@@ -6,16 +6,16 @@ import Input from "antd/lib/input";
 import { Button } from "antd";
 import { Link } from 'react-router-dom';
 
-export default function facultySignUp() {
-    const onFinish = values => {
-        console.log('Success:', values);
-    };
+export default function facultySignUp(props) {
+    function handleLogin(values) {
+        props.createTeacher(values);
+    }
     return (
         <div className="formfs">
             <Form
                 name="login-form"
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
+                onFinish={handleLogin}
             >
                 <p className="form-title">Welcome To "The Mentor"</p>
                 <p>Sign Up </p>
@@ -51,10 +51,6 @@ export default function facultySignUp() {
                     <Input.Password
                         placeholder="Password"
                     />
-                </Form.Item>
-
-                <Form.Item name="remember" valuePropName="checked">
-                    <a href="/login">Forgot Password</a>
                 </Form.Item>
                 <Form.Item name="remember" valuePropName="checked">
                     <Link to="/login">

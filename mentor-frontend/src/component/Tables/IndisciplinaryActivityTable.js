@@ -20,37 +20,36 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function AddInternshipForm() {
-  const onFinish = values => {
-      console.log('Success:', values);
-  };
-
-  const onFinishFailed = errorInfo => {
-      console.log('Failed:', errorInfo);
+function AddInternshipForm(props) {
+  const onFinish = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target),
+        formDataObj = Object.fromEntries(formData.entries());
+    props.addActivity(props.studentId, formDataObj);
   };
 
   return (
-          <Form
-              name="login-form"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-          >
+        <Form onSubmit={onFinish}>
             <Form.Group>
               <Form.Label>Activity</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control name="activity" type="text" />
             </Form.Group>
             <Form.Group>
               <Form.Label>Date</Form.Label>
-              <Form.Control type="date"/>
+              <Form.Control name="date" type="date"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Punishment</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control name='punishment' type="text"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Remark</Form.Label>
-              <Form.Control type="text" placeholder="ex. Web Dev" />
+              <Form.Control name="remark" type="text" placeholder="ex. Web Dev" />
+            </Form.Group>
+            <Form.Group>
+                <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+                Submit
+                </Button>
             </Form.Group>
           </Form>
   )
@@ -70,12 +69,8 @@ function AddInternshipModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddInternshipForm/>
+        <AddInternshipForm addActivity = {props.addActivity} studentId = {props.studentId}/>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide} variant="success">Save</Button>
-        <Button onClick={props.onHide} variant="danger">Discard</Button>
-      </Modal.Footer>
     </Modal>
   );
 }
@@ -90,28 +85,15 @@ function createData(activity, date, punishment, remark, button) {
   };
 }
 
-const deleteButton = <button className="btn btn-danger">Delete</button>;
+const options = (studentId, absenceId, deleteActivity) => <Button variant="danger" onClick={() => deleteActivity(studentId, absenceId)}>Delete</Button>;
 
-const rows = [
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton),
-  createData("Web Dev", "2020-10-10", "Masti Band", "Suspend", deleteButton)
-];
+function loadData(data, studentId, deleteActivity) {
+  var rows = [];
+  data.map((record) => {
+    rows.push(createData(record.activity, record.date, record.punishment, record.remark, options(studentId, record._id, deleteActivity)));
+  });
+  return rows;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -241,7 +223,7 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
@@ -266,7 +248,7 @@ export default function EnhancedTable() {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
+  const rows = loadData(props.student.profile.disciplinary, props.student.profile._id, props.deleteActivity)
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -283,6 +265,8 @@ export default function EnhancedTable() {
                 <AddInternshipModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
+                    addActivity = {props.addActivity}
+                    studentId = {props.student.profile._id}
                 />
             </div>
         <TableContainer>
