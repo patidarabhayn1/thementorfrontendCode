@@ -54,6 +54,7 @@ function LoadResult(props){
                 addResult = {props.addResult}
                 editResult = {props.editResult}
                 deleteResult = {props.deleteResult}
+                auth = {props.auth}
           />
       );
     }
@@ -104,6 +105,7 @@ export default function BasicTabs(props) {
             student = {props.student} 
             addInternship = {props.addInternship} 
             deleteInternship = {props.deleteInternship}
+            auth={props.auth}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -111,6 +113,7 @@ export default function BasicTabs(props) {
           student = {props.student} 
           addCourse = {props.addCourse}
           deleteCourse = {props.deleteCourse}
+          auth={props.auth}
         />
       </TabPanel>
       <TabPanel value={value} index={2}>
@@ -120,6 +123,7 @@ export default function BasicTabs(props) {
                 addResult = {props.addResult}
                 editResult = {props.editResult}
                 deleteResult = {props.deleteResult}
+                auth={props.auth}
             />
       </TabPanel>
       <TabPanel value={value} index={3}>
@@ -127,6 +131,7 @@ export default function BasicTabs(props) {
             student = {props.student} 
             addAbsence = {props.addAbsence} 
             deleteAbsence = {props.deleteAbsence}
+            auth={props.auth}
           />
       </TabPanel>
       <TabPanel value={value} index={4}>
@@ -134,6 +139,7 @@ export default function BasicTabs(props) {
               student = {props.student}
               addActivity = {props.addActivity}
               deleteActivity = {props.deleteActivity}
+              auth={props.auth}
           />
       </TabPanel>
     </div>

@@ -71,6 +71,14 @@ body {
   text-align: right;
 }
 
+.editButton{
+  text-align: left;
+}
+
+.logoutBtn{
+  display: none;
+}
+
 .profiles{
   
   display: flex;
@@ -149,6 +157,9 @@ body {
   }
   .mainSection{
     padding: 20% 2% 0 2%;
+  }
+  .logoutBtn{
+    display: block;
   }
 }
 

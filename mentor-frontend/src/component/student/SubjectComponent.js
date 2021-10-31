@@ -142,6 +142,9 @@ function LoadSubject(props){
     if(props.subject.subject != null){
         return (
             <>
+            {props.auth.isTeacher ?
+            <div></div>
+            :
             <div  className="addButton">
                 <Button onClick={() => setModalShow(true)}>
                     Edit Subject
@@ -156,6 +159,7 @@ function LoadSubject(props){
                     subjectId = {props.subjectId}
                 />
             </div>
+            }
             <Form>
                 <Row style={{marginTop: "10px", marginBottom: "20px"}}>
                     <Col>
@@ -289,6 +293,7 @@ function ShowResult(props){
                         editSubject = {props.editSubject} 
                         resultId = {resultId}
                         subjectId = {subjectId}
+                        auth = {props.auth}
             />    
         </>
     );

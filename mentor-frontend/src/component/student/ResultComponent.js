@@ -137,6 +137,58 @@ function AddInternshipModal(props) {
     );
   }
 
+function EditResultForm(props) {
+    const onFinish = e => {
+        e.preventDefault();
+        const formData = new FormData(e.target),
+                formDataObj = Object.fromEntries(formData.entries());
+        props.editResult(props.resultId, formDataObj);
+        };
+
+    return (
+            <Form onSubmit={onFinish}> 
+              <Form.Group>
+                <Form.Label>CGPA</Form.Label>
+                <Form.Control name="cgpa" type="number" min="0" max="10" step = "0.01"/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>SGPA</Form.Label>
+                <Form.Control name="sgpa" type="number" min="0" max="10" step = "0.01"/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Credits Earned</Form.Label>
+                <Form.Control name="creditsEarned" type="number" min="0" max="30 "/>
+              </Form.Group>
+              <Form.Group>
+                <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>
+                    Edit
+                </Button>
+            </Form.Group>
+            </Form>
+    )
+}
+
+function EditResultModal(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Edit Result
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p style={{color:"red"}}>Fill All details Again which are editable</p>
+          <EditResultForm editResult = {props.editResult} resultId = {props.resultId}/>
+        </Modal.Body>
+      </Modal>
+    );
+  }
+
 function LoadSubjects(props) {
     if(props.subjects.subjects != null) {
         return(
@@ -161,31 +213,49 @@ function LoadSubjects(props) {
 
 function AddResult(props){
     const [modalShow, setModalShow] = React.useState(false);
+    const [modalShow2, setModalShow2] = React.useState(false);
 
     const { studentId, resultId }  = useParams();
     if(props.auth.isTeacher){
         if (!props.subjects.errMess && !props.subjects.isLoading) {
-            if(props.subjects.subjects == null)
+            if(props.subjects.subjects == null) 
                 props.loadSubjectsTeacher(studentId, resultId);
-            // else if(props.subjects.subjects._id != resultId)
-            //     props.loadSubjectsTeacher(studentId, resultId);
+            else if(props.subjects.subjects[0]._id != resultId){
+                props.subjects.isLoading = true;
+                props.loadSubjectsTeacher(studentId, resultId);
+            }
         }
     }
     else {
         if (!props.subjects.errMess && !props.subjects.isLoading) {
-            if(props.subjects.subjects == null)
+            if(props.subjects.subjects == null){
                 props.loadSubjectsStudent(resultId);
-            // else if(props.subjects.subjects._id != resultId)
-            //     props.loadSubjectsStudent(resultId);
+            }
+            else if(props.subjects.subjects[0]._id != resultId) {
+                props.loadSubjectsStudent(resultId);
+            }
         }
     }
     return(
         <>
-            <div  className="addButton">
-                <Button variant="success" onClick={() => setModalShow(true)}>
-                    Add Subject
+        {
+            props.auth.isTeacher ?
+            <div></div>
+            :
+            <div>
+                <Button variant="success" onClick={() => setModalShow2(true)} style={{float: "left", margin: "10px"}}>
+                    Edit Result
                 </Button>
 
+                <EditResultModal
+                    show={modalShow2}
+                    onHide={() => setModalShow2(false)}
+                    editResult = {props.editResult}
+                    resultId = {resultId}
+                />
+                <Button variant="success" onClick={() => setModalShow(true)} style={{float: "right", margin: "10px"}}>
+                    Add Subject
+                </Button>
                 <AddInternshipModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
@@ -193,6 +263,7 @@ function AddResult(props){
                     resultId = {resultId}
                 />
             </div>
+          }
             <LoadSubjects 
                     subjects = {props.subjects}
                     studentId = {studentId}

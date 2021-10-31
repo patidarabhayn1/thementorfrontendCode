@@ -22,16 +22,15 @@ function DisplayMessage({message, removeMessage}) {
 }
 
 function Main(props) {
-    const StudentPrivateRoute = ({ component: Component, ...rest }) => (
-        <Route {...rest} render={(props) => (
-          props.auth.isAuthenticated && (!props.auth.isTeacher)
-            ? <Component {...props} />
-            : <Redirect to={{
-                pathname: '/login',
-                state: { from: props.location }
-              }} />
-        )} />
-    );
+    const StudentPrivateRoute = ({component: Component, ...rest}) => {
+        return (
+            <Route {...rest} render={props => (
+                (!props.auth.isTeacher) ?
+                    <Component {...props} />
+                : <Redirect to="/teacher/home" />
+            )} />
+        );
+    };
 
     const ResultPage = () => {
         return(
@@ -42,6 +41,7 @@ function Main(props) {
                     subjects = {props.subjects}
                     addSubject = {props.addSubject}
                     deleteSubject = {props.deleteSubject}
+                    editResult = {props.editResult}
             />
         );
     }
@@ -59,7 +59,6 @@ function Main(props) {
                 deleteCourse = {props.deleteCourse}
                 result = {props.result}
                 addResult = {props.addResult}
-                editResult = {props.editResult}
                 deleteResult = {props.deleteResult}
                 addAbsence = {props.addAbsence}
                 deleteAbsence = {props.deleteAbsence}
@@ -84,15 +83,25 @@ function Main(props) {
         <div className="app">
              <DisplayMessage message = {props.message} removeMessage = {props.removeMessage}/>
             <div className='navss'>
-                <Header student = {props.student} logoutStudent = {props.logoutStudent}/>
+                <Header student = {props.student} 
+                    logoutStudent = {props.logoutStudent} 
+                    auth={props.auth}
+                    logoutTeacher = {props.logoutTeacher}
+                />
             </div>
             <div className="containers">
-                <NavigationBar student = {props.student} logoutStudent = {props.logoutStudent}/>
+                <NavigationBar 
+                    student = {props.student} 
+                    logoutStudent = {props.logoutStudent}
+                    auth={props.auth}
+                    logoutTeacher = {props.logoutTeacher}
+                    teacher = {props.teacher}
+                />
             </div>
             <div className="container mainSection">
                 <Switch>
                     <Route exact path="/student/:studentId" component={ProfilePage}/>
-                    <StudentPrivateRoute path="/student/home" component={ProfilePage}/>
+                    <StudentPrivateRoute exact path="/student/home" component={ProfilePage}/>
                     <Route exact path="/student/:studentId/result/:resultId" component={ResultPage}/>
                     <Route exact path="/student/:studentId/result/:resultId/:subjectId" component={SubjectPage}/>
                     <Redirect to="/login"/>

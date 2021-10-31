@@ -957,7 +957,7 @@ export const loadSubjectsTeacher = (studentId, resultId) => (dispatch) => {
     dispatch(subjectsLoading());
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'students/' + studentId + 'results/' + resultId, {
+    return fetch(baseUrl + 'students/' + studentId + '/result/' + resultId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -1130,7 +1130,7 @@ export const loadSubjectTeacher = (studentId, resultId, subjectId) => (dispatch)
     dispatch(subjectLoading());
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'students/' + studentId + 'results/' + resultId + '/subjects/' + subjectId, {
+    return fetch(baseUrl + 'students/' + studentId + '/result/' + resultId + '/subjects/' + subjectId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

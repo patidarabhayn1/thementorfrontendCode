@@ -134,6 +134,7 @@ class Home extends Component{
                     removeMessage = {this.props.removeMessage}
                     loadStudentProfile = {this.props.loadStudentProfile}
                     student = {this.props.student}
+                    teacher = {this.props.teacher}
                     internship = {this.props.internship}
                     loadInternshipCertificate = {this.props.loadInternshipCertificate}
                     addInternship = {this.props.addInternship}
@@ -149,6 +150,7 @@ class Home extends Component{
                     auth = {this.props.auth}
                     loadLoggedStudent = {this.props.loadLoggedStudent}
                     logoutStudent = {this.props.logoutStudent}
+                    logoutTeacher = {this.props.logoutTeacher}
                     result = {this.props.result}
                     subjects = {this.props.subjects}
                     subject = {this.props.subject}

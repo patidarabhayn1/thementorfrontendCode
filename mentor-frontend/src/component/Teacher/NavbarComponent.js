@@ -215,13 +215,6 @@ function NavigationBar(props) {
                                 {/* <Text clicked={click}>Home</Text> */}
                               </Link>
                             </Item>
-                            <Item>
-                              <Link to="/teacher/home">
-                                <span className="fa fa-user fa-lg"></span>
-                                {/* <Text clicked={click}>Profile</Text> */}
-                              </Link>
-                            </Item>
-                            
                         </SlickBar>
 
                         <Profile clicked={profileClick}>

@@ -74,6 +74,7 @@ function LoadProfile(props) {
                             deleteAbsence = {props.deleteAbsence}
                             addActivity = {props.addActivity}
                             deleteActivity = {props.deleteActivity}
+                            auth={props.auth}
                 />
             </div>
         </div>
@@ -122,6 +123,7 @@ function Profiles(props) {
                 deleteAbsence = {props.deleteAbsence}
                 addActivity = {props.addActivity}
                 deleteActivity = {props.deleteActivity}
+                auth={props.auth}
             />
     );
 }

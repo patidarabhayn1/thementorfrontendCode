@@ -178,10 +178,10 @@ const Logout = styled.button`
   }
 `;
 
-function LoadName({student}){
-  if(student.profile != null) {
+function LoadName({profile}){
+  if(profile != null) {
     return(
-      <h4 style={{color: "white"}}>{student.profile.name}</h4>
+      <h4 style={{color: "white"}}>{profile.name}</h4>
     );
   }
   else {  
@@ -210,10 +210,18 @@ function NavigationBar(props) {
                         </Logo>
                         <SlickBar clicked={click}>
                             <Item>
-                              <Link to="/student/home">
-                                <span className="fa fa-home fa-lg"></span>
-                                {/* <Text clicked={click}>Home</Text> */}
-                              </Link>
+                              {
+                                (props.auth.isTeacher) ?
+                                <Link to="/teacher/home">
+                                  <span className="fa fa-home fa-lg"></span>
+                                  {/* <Text clicked={click}>Home</Text> */}
+                                </Link>
+                                :
+                                <Link to="/student/home">
+                                  <span className="fa fa-home fa-lg"></span>
+                                  {/* <Text clicked={click}>Home</Text> */}
+                                </Link>
+                              }
                             </Item>
                         </SlickBar>
 
@@ -225,12 +233,25 @@ function NavigationBar(props) {
                             />
                             <Details clicked={profileClick}>
                                 <Name>
-                                  <LoadName student = {props.student}/>
+                                {
+                                  (props.auth.isTeacher) ?
+                                  <LoadName profile = {props.teacher.profile}/>
+                                  :
+                                  <LoadName profile = {props.student.profile}/>
+                                }
                                 </Name>
-
+                                {
+                                  (props.auth.isTeacher) ?
+                                  
+                                <Logout onClick = {() => props.logoutTeacher()}>
+                                    <span className="fa fa-sign-out"></span>
+                                </Logout>
+                                  :
+                                  
                                 <Logout onClick = {() => props.logoutStudent()}>
                                     <span className="fa fa-sign-out"></span>
                                 </Logout>
+                                }
                             </Details>
                         </Profile>
                     </SidebarContainer>

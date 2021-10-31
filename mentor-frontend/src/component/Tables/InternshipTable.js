@@ -262,7 +262,11 @@ export default function EnhancedTable(props) {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar />
-        <div className="addButton">
+        {
+          props.auth.isTeacher ?
+          <div></div>
+          :
+          <div className="addButton">
           <Button variant="success" onClick={() => setModalShow(true)}>
             Add Record
           </Button>
@@ -273,6 +277,7 @@ export default function EnhancedTable(props) {
             addInternship={props.addInternship}
           />
         </div>
+        }
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
