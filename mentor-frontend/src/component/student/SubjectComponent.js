@@ -20,11 +20,11 @@ function AddInternshipForm(props) {
                 <Row>
                     <Col>
                         <Form.Label>Course Code</Form.Label>
-                        <Form.Control type="text" value = {props.subject.subject.course.courseCode}/>
+                        <Form.Control required type="text" value = {props.subject.subject.course.courseCode}/>
                     </Col>
                     <Col>
                         <Form.Label>Credits</Form.Label>
-                        <Form.Control type="number" value = {props.subject.subject.credits}/>
+                        <Form.Control required type="number" value = {props.subject.subject.credits}/>
                     </Col>
                 </Row>
                 

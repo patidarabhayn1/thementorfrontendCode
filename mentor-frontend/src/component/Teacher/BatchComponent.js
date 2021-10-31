@@ -24,7 +24,7 @@ function AddStudentForm(props) {
     <Form onSubmit={onFinish}>
       <Form.Group>
         <Form.Label>Student's Enrollment No.</Form.Label>
-        <Form.Control type="text" name="mentee" placeholder="ex. EN19CS306016" />
+        <Form.Control required type="text" name="mentee" placeholder="ex. EN19CS306016" />
         <Form.Text className="text-muted">
           We will show his details
         </Form.Text>
@@ -78,12 +78,12 @@ function AddMeetingForm(props) {
     <Form onSubmit={onFinish}>
       <Form.Group>
         <Form.Label>Date</Form.Label>
-        <Form.Control type="date" name="date" placeholder="ex. dd-mm-yy" />
+        <Form.Control required type="date" name="date" placeholder="ex. dd-mm-yy" />
       </Form.Group>
 
       <Form.Group>
         <Form.Label>Advice</Form.Label>
-        <Form.Control type="text" name="advice" placeholder="Do Some Internships" />
+        <Form.Control required type="text" name="advice" placeholder="Do Some Internships" />
         <Form.Text className="text-muted">
           What advice you have given to mentees
         </Form.Text>
@@ -91,7 +91,7 @@ function AddMeetingForm(props) {
 
       <Form.Group>
         <Form.Label>Attendece</Form.Label>
-        <Form.Control type="number" name="attendence" placeholder="ex. 88.33%" />
+        <Form.Control required type="number" name="attendence" placeholder="ex. 88.33%" />
         <Form.Text className="text-muted">
           (in %)
         </Form.Text>

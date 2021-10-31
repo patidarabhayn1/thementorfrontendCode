@@ -23,15 +23,15 @@ function AddInternshipForm(props) {
           <Form onSubmit={onFinish}>
             <Form.Group>
               <Form.Label>Branch</Form.Label>
-              <Form.Control type="text" name="branch"/>
+              <Form.Control required type="text" name="branch"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>Year</Form.Label>
-              <Form.Control type="number" name="year"/>
+              <Form.Control required type="number" name="year"/>
             </Form.Group>
             <Form.Group>
               <Form.Label>From</Form.Label>
-              <Form.Control type="date" name="from"/>
+              <Form.Control required type="date" name="from"/>
             </Form.Group>
             <Form.Group>
               <Button type="primary" htmlType="submit" className="login-form-button" style = {{marginTop: "10px"}}>

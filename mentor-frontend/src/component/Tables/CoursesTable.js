@@ -33,23 +33,23 @@ function AddInternshipForm(props) {
     <Form onSubmit={onFinish}>
       <Form.Group>
         <Form.Label>Domain</Form.Label>
-        <Form.Control name="domain" type="text" placeholder="ex. Web Dev" />
+        <Form.Control required name="domain" type="text" placeholder="ex. Web Dev" />
       </Form.Group>
       <Form.Group>
         <Form.Label>Platform</Form.Label>
-        <Form.Control name="platform" type="text" placeholder="ex. Coursera" />
+        <Form.Control required name="platform" type="text" placeholder="ex. Coursera" />
       </Form.Group>
       <Form.Group>
         <Form.Label>From</Form.Label>
-        <Form.Control name="from" type="date" />
+        <Form.Control required name="from" type="date" />
       </Form.Group>
       <Form.Group>
         <Form.Label>To</Form.Label>
-        <Form.Control name="to" type="date" />
+        <Form.Control required name="to" type="date" />
       </Form.Group>
       <Form.Group>
         <Form.Label>Certificate</Form.Label>
-        <Form.Control name="certificate" type="file" accept="application/pdf" />
+        <Form.Control required name="certificate" type="file" accept="application/pdf" />
       </Form.Group>
       <Form.Group>
         <Button type="primary" htmlType="submit" className="login-form-button" style={{ marginTop: "10px" }}>

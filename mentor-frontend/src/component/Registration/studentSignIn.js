@@ -44,9 +44,9 @@ export default function studentSignIn(props) {
                     />
                 </Form.Item>
 
-                <Form.Item name="remember" valuePropName="checked">
+                {/* <Form.Item name="remember" valuePropName="checked">
                     <a href="/login">Forgot Password</a>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item name="remember" valuePropName="checked">
                     <Link to="/signup">
                         <span>Don't have an account? </span>SIGN UP NOW

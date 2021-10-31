@@ -38,7 +38,7 @@ function AddSemesterForm(props) {
           <p style={{color: "red"}}>PLEASE ENTER DETAILS ONLY WHICH ARE AVAILABLE</p>
               <Form.Group>
                 <Form.Label>Semester</Form.Label>
-                <Form.Select name="sem" aria-label="Default select example">
+                <Form.Select required name="sem" aria-label="Default select example">
                   <option>-</option>
                   <option value="1">Odd</option>
                   <option value="2">Even</option>
@@ -47,7 +47,7 @@ function AddSemesterForm(props) {
               </Form.Group>
               <Form.Group>
                 <Form.Label>Year</Form.Label>
-                <Form.Control name="year" type="number" min="1" max="5" />
+                <Form.Control required name="year" type="number" min="1" max="5" />
               </Form.Group>
               <Form.Group>
                 <Form.Label>CGPA</Form.Label>

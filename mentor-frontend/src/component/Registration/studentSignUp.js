@@ -93,7 +93,9 @@ export default function StudentSignUp(props) {
                         placeholder="Degree"
                     />
                 </Form.Item>
-                <Form.Item label="Admission Date" name="admissionDate">
+                <Form.Item  label="Admission Date" name="admissionDate"
+                rules={[{ required: true, message: 'Please input Admission Date!' }]}
+                >
                     <DatePicker />
                 </Form.Item>
                 <Form.Item 
