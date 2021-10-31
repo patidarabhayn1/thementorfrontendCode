@@ -94,6 +94,12 @@ function LoadProfile(props) {
 
 function Profiles(props) {
     var { studentId } = useParams();
+    console.log(window.location.href);
+    if(window.location.href == "http://localhost:3000/student/home" && props.auth.isTeacher){
+        return(
+            <h2>Access Denied</h2>
+        );
+    }
     if(props.auth.isTeacher){
         if (!props.student.errMess && !props.student.isLoading) {
             if(props.student.profile == null)

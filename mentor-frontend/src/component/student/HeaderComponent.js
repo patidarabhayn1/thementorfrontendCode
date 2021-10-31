@@ -4,13 +4,14 @@ import Nav from 'react-bootstrap/Nav';
 import { Container } from "react-bootstrap";
 import {Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import Logo from '../../images/logo3.png';
 
 function Header(props){
     if(props.auth.isTeacher) {
         return (
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" style={{padding: "0px"}}>
                 <Container>
-                    <Navbar.Brand><Link to="/teacher/home">The Mentor</Link></Navbar.Brand>
+                    <Navbar.Brand><Link to="/teacher/home"><img src={Logo} style={{height: "45px"}} className="logo"></img></Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
 
@@ -31,9 +32,9 @@ function Header(props){
     }
     else {
         return (
-            <Navbar bg="light" expand="lg">
+            <Navbar bg="light" expand="lg" style={{padding: "0px"}}>
                 <Container>
-                    <Navbar.Brand><Link to="/student/home">The Mentor</Link></Navbar.Brand>
+                    <Navbar.Brand><Link to="/teacher/home"><img src={Logo} style={{height: "45px"}} className="logo"></img></Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
 

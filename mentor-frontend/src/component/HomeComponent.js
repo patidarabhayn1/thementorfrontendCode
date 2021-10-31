@@ -178,6 +178,17 @@ class Home extends Component{
                   }} />
             )} />
         );
+
+        const StudentPrivateRoute = ({ component: Component, ...rest }) => (
+            <Route {...rest} render={(props) => (
+              this.props.auth.isAuthenticated && (!this.props.auth.isTeacher)
+                ? <Component {...props} />
+                : <Redirect to={{
+                    pathname: '/login',
+                    state: { from: props.location }
+                  }} />
+            )} />
+        );
         
         const PrivateRoute = ({ component: Component, ...rest }) => (
             <Route {...rest} render={(props) => (
@@ -202,6 +213,7 @@ class Home extends Component{
                     <Route path = "/signup" component = {SignupPage}/>
                     <TeacherPrivateRoute path = "/teacher" component = {TeacherPage} />
                     <PrivateRoute path = "/student" component = {StudentPage}/>
+                    <StudentPrivateRoute path = "/student/home" component = {StudentPage}/>
                     <Redirect to="/login"/>
                 </Switch>
         );
